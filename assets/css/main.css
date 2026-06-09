@@ -347,21 +347,16 @@ a.tile:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 .cstep p{font-size:14.5px;color:var(--mut)}
 
 
-/* ---------- скролл-хребет: линия с точками по разделам ---------- */
-.spine{position:fixed;left:34px;top:50%;transform:translateY(-50%);height:56vh;z-index:60;display:none}
-@media(min-width:1280px){.spine{display:block}}
-.spine .track,.spine .fill{position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);border-radius:2px}
-.spine .track{background:rgba(110,118,134,.28)}
-.spine .fill{background:linear-gradient(180deg,var(--blue),#5E8EE8);transform-origin:top;transform:translateX(-50%) scaleY(0)}
-.spine .dot{position:absolute;left:50%;width:11px;height:11px;transform:translate(-50%,-50%);border-radius:50%;
-  background:#C2CAD8;border:none;padding:0;cursor:pointer;transition:background .25s,box-shadow .25s}
-.spine .dot:hover{background:var(--blue)}
-.spine .dot.on{background:var(--blue);box-shadow:0 0 0 5px rgba(29,91,214,.18)}
-.spine .dot .tip{position:absolute;left:22px;top:50%;transform:translateY(-50%) translateX(-6px);white-space:nowrap;
-  font-size:12.5px;font-weight:600;color:#fff;background:var(--ink);border-radius:8px;padding:5px 11px;
-  opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
-.spine .dot:hover .tip{opacity:1;transform:translateY(-50%) translateX(0)}
-.spine .dot:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+/* ---------- гибкая линия-маршрут ---------- */
+.journey{position:absolute;top:0;left:0;width:100%;z-index:40;pointer-events:none;overflow:hidden}
+.journey svg{display:block;width:100%;height:100%}
+.journey .jtrack{fill:none;stroke:rgba(110,118,134,.20);stroke-width:2}
+.journey .jdraw{fill:none;stroke:url(#jgrad);stroke-width:2.5;stroke-linecap:round}
+.journey .jnode{fill:#C6CDD9;pointer-events:auto;cursor:pointer;transition:fill .35s,r .35s}
+.journey .jnode:hover{fill:var(--blue)}
+.journey .jnode.on{fill:var(--blue);filter:drop-shadow(0 0 7px rgba(29,91,214,.8))}
+.journey .jcomet{fill:#5E8EE8;filter:drop-shadow(0 0 9px rgba(94,142,232,.95))}
+@media(max-width:1359px){.journey{display:none}}
 
 /* ---------- фоновые орбы по бокам ---------- */
 .orb{position:fixed;border-radius:50%;pointer-events:none;z-index:5;filter:blur(70px);opacity:.5;will-change:transform;display:none}
@@ -371,4 +366,4 @@ a.tile:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 .orb-3{width:340px;height:340px;left:-260px;top:70%;background:radial-gradient(circle,rgba(29,91,214,.26),transparent 70%)}
 .orb-4{width:300px;height:300px;right:-240px;top:88%;background:radial-gradient(circle,rgba(94,142,232,.24),transparent 70%)}
 
-@media(prefers-reduced-motion:reduce){.spine,.orb{display:none !important}}
+@media(prefers-reduced-motion:reduce){.journey,.orb{display:none !important}}

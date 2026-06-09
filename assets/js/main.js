@@ -50,9 +50,8 @@ var cio = new IntersectionObserver(function(es){
 }, {threshold:.6});
 document.querySelectorAll('[data-cnt]').forEach(function(el){ cio.observe(el); });
 
-
-/* ---------- боковые украшения: орбы + скролл-хребет ---------- */
-var orbs = [], spineFill = null, spineDots = [], spineSecs = [];
+/* ---------- фоновые орбы ---------- */
+var orbs = [];
 if (!reduce){
   for (var oi = 1; oi <= 4; oi++){
     var o = document.createElement('div');
@@ -60,32 +59,119 @@ if (!reduce){
     document.body.appendChild(o);
     orbs.push(o);
   }
-  (function buildSpine(){
-    var secs = [].slice.call(document.querySelectorAll('main section')).filter(function(s){
-      return s.offsetHeight > 250 && s.querySelector('h1,h2');
-    });
-    if (secs.length < 3) return;
-    var sp = document.createElement('nav');
-    sp.className = 'spine';
-    sp.setAttribute('aria-label', 'Разделы страницы');
-    var track = document.createElement('div'); track.className = 'track';
-    spineFill = document.createElement('div'); spineFill.className = 'fill';
-    sp.appendChild(track); sp.appendChild(spineFill);
-    secs.forEach(function(s, i){
-      var d = document.createElement('button');
-      d.className = 'dot';
-      d.style.top = (secs.length > 1 ? i / (secs.length - 1) * 100 : 0) + '%';
-      var label = (s.querySelector('h1,h2').textContent || '').trim().replace(/\s+/g, ' ');
-      if (label.length > 30) label = label.slice(0, 29).trim() + '…';
-      d.innerHTML = '<span class="tip">' + label + '</span>';
-      d.setAttribute('aria-label', label);
-      d.addEventListener('click', function(){ s.scrollIntoView({behavior:'smooth', block:'start'}); });
-      sp.appendChild(d);
-      spineDots.push(d);
-    });
-    spineSecs = secs;
-    document.body.appendChild(sp);
-  })();
+}
+
+/* ---------- гибкая линия-маршрут через ключевые точки ---------- */
+var SVGNS = 'http://www.w3.org/2000/svg';
+var jWrap = null, jDraw = null, jComet = null, jNodes = [], jFracs = [], jLen = 0;
+
+function keySections(){
+  return [].slice.call(document.querySelectorAll('main section')).filter(function(s){
+    return s.offsetHeight > 250 && s.querySelector('h1,h2');
+  });
+}
+
+function buildJourney(){
+  if (jWrap){ jWrap.remove(); jWrap = null; jDraw = null; jComet = null; jNodes = []; jFracs = []; jLen = 0; }
+  if (reduce || innerWidth < 1360) return;
+  var secs = keySections();
+  if (secs.length < 3) return;
+
+  var vw = document.documentElement.clientWidth;
+  var H = document.documentElement.scrollHeight;
+  var margin = Math.max(28, Math.min(90, (vw - 1320) / 2 * .55));
+
+  // ключевые точки: чередуем стороны
+  var pts = secs.map(function(s, i){
+    var y = s.getBoundingClientRect().top + scrollY + 130;
+    var x = (i % 2 === 0) ? margin : vw - margin;
+    return {x: x, y: Math.min(y, H - 80), sec: s,
+            label: (s.querySelector('h1,h2').textContent || '').trim().replace(/\s+/g, ' ')};
+  });
+
+  // ломаная со скруглениями: вниз по краю, поперёк в зазоре между секциями
+  var startY = Math.max(90, pts[0].y - 260);
+  var d = 'M ' + pts[0].x + ' ' + startY + ' L ' + pts[0].x + ' ' + pts[0].y;
+  for (var i = 0; i < pts.length - 1; i++){
+    var p = pts[i], q = pts[i + 1];
+    if (p.x === q.x){
+      d += ' L ' + q.x + ' ' + q.y;
+      continue;
+    }
+    var yc = q.y - 120;                                  // поперечина чуть выше следующего узла
+    var r = Math.min(70, (yc - p.y - 12) / 2, Math.abs(q.x - p.x) / 2 - 4);
+    if (r < 16){ d += ' L ' + q.x + ' ' + q.y; continue; }
+    var dir = q.x > p.x ? 1 : -1;
+    d += ' L ' + p.x + ' ' + (yc - r)
+       + ' Q ' + p.x + ' ' + yc + ' ' + (p.x + dir * r) + ' ' + yc
+       + ' L ' + (q.x - dir * r) + ' ' + yc
+       + ' Q ' + q.x + ' ' + yc + ' ' + q.x + ' ' + (yc + r)
+       + ' L ' + q.x + ' ' + q.y;
+  }
+  d += ' L ' + pts[pts.length - 1].x + ' ' + Math.min(H - 60, pts[pts.length - 1].y + 220);
+
+  jWrap = document.createElement('div');
+  jWrap.className = 'journey';
+  jWrap.style.height = H + 'px';
+  var svg = document.createElementNS(SVGNS, 'svg');
+  svg.setAttribute('viewBox', '0 0 ' + vw + ' ' + H);
+  svg.setAttribute('preserveAspectRatio', 'none');
+
+  var defs = document.createElementNS(SVGNS, 'defs');
+  defs.innerHTML = '<linearGradient id="jgrad" x1="0" y1="0" x2="0" y2="1">' +
+    '<stop offset="0" stop-color="#1D5BD6"/><stop offset=".5" stop-color="#5E8EE8"/>' +
+    '<stop offset="1" stop-color="#1D5BD6"/></linearGradient>';
+  svg.appendChild(defs);
+
+  var track = document.createElementNS(SVGNS, 'path');
+  track.setAttribute('d', d);
+  track.setAttribute('class', 'jtrack');
+  svg.appendChild(track);
+
+  jDraw = document.createElementNS(SVGNS, 'path');
+  jDraw.setAttribute('d', d);
+  jDraw.setAttribute('class', 'jdraw');
+  svg.appendChild(jDraw);
+
+  jLen = jDraw.getTotalLength();
+  jDraw.style.strokeDasharray = jLen;
+  jDraw.style.strokeDashoffset = jLen;
+
+  // доли длины пути для каждого узла (по ближайшей точке выборки)
+  var SAMPLES = 600, cursor = 0;
+  jFracs = pts.map(function(){ return 1; });
+  for (var k = 0; k < pts.length; k++){
+    var best = Infinity, bestT = 1;
+    for (var t = cursor; t <= SAMPLES; t++){
+      var sp = jDraw.getPointAtLength(jLen * t / SAMPLES);
+      var dx = sp.x - pts[k].x, dy = sp.y - pts[k].y;
+      var dist = dx * dx + dy * dy;
+      if (dist < best){ best = dist; bestT = t; }
+      if (dist < 16) break;
+    }
+    cursor = bestT;
+    jFracs[k] = bestT / SAMPLES;
+  }
+
+  jNodes = pts.map(function(pt){
+    var g = document.createElementNS(SVGNS, 'circle');
+    g.setAttribute('cx', pt.x); g.setAttribute('cy', pt.y); g.setAttribute('r', 6);
+    g.setAttribute('class', 'jnode');
+    var title = document.createElementNS(SVGNS, 'title');
+    title.textContent = pt.label;
+    g.appendChild(title);
+    g.addEventListener('click', function(){ pt.sec.scrollIntoView({behavior:'smooth', block:'start'}); });
+    svg.appendChild(g);
+    return g;
+  });
+
+  jComet = document.createElementNS(SVGNS, 'circle');
+  jComet.setAttribute('r', 4.5);
+  jComet.setAttribute('class', 'jcomet');
+  svg.appendChild(jComet);
+
+  jWrap.appendChild(svg);
+  document.body.appendChild(jWrap);
 }
 
 /* ---------- скролл-движок ---------- */
@@ -127,31 +213,39 @@ function update(){
     heroFx.style.opacity = (1 - p * .9).toFixed(3);
     heroFx.style.transform = 'scale(' + (1 - p * .06).toFixed(4) + ') translateY(' + (p * -28).toFixed(1) + 'px)';
   }
-  // хребет: заполнение и активные точки
-  var docH = document.documentElement.scrollHeight - vh;
-  var sp = docH > 0 ? clamp01(scrollY / docH) : 0;
-  if (spineFill){
-    spineFill.style.transform = 'translateX(-50%) scaleY(' + sp.toFixed(4) + ')';
-    var idx = 0;
-    for (var si = 0; si < spineSecs.length; si++){
-      if (spineSecs[si].getBoundingClientRect().top < vh * .55) idx = si;
-    }
-    for (var di = 0; di < spineDots.length; di++){
-      spineDots[di].classList.toggle('on', di <= idx);
+  // линия-маршрут: прорисовка, комета, подсветка узлов
+  var docH = document.documentElement.scrollHeight;
+  var pj = docH > vh ? clamp01((scrollY + vh * .62) / docH) : 0;
+  if (jDraw && jLen){
+    var drawn = jLen * pj;
+    jDraw.style.strokeDashoffset = (jLen - drawn).toFixed(1);
+    var cp = jDraw.getPointAtLength(drawn);
+    jComet.setAttribute('cx', cp.x.toFixed(1));
+    jComet.setAttribute('cy', cp.y.toFixed(1));
+    for (var ni = 0; ni < jNodes.length; ni++){
+      jNodes[ni].classList.toggle('on', jFracs[ni] <= pj + .002);
     }
   }
   // орбы дрейфуют с разной скоростью
+  var po = docH > vh ? clamp01(scrollY / (docH - vh)) : 0;
   for (var bi = 0; bi < orbs.length; bi++){
-    orbs[bi].style.transform = 'translateY(' + (-sp * (160 + bi * 90)).toFixed(1) + 'px)';
+    orbs[bi].style.transform = 'translateY(' + (-po * (160 + bi * 90)).toFixed(1) + 'px)';
   }
   nav && nav.classList.toggle('scrolled', scrollY > 8);
 }
 function onScroll(){
   if (!ticking){ requestAnimationFrame(update); ticking = true; }
 }
-if (!reduce && (scenes.length || plxEls.length || wordScenes.length || heroFx || spineFill || orbs.length)){
+if (!reduce){
+  buildJourney();
+  addEventListener('load', function(){ buildJourney(); update(); });
+  var rT;
+  addEventListener('resize', function(){
+    clearTimeout(rT);
+    rT = setTimeout(function(){ buildJourney(); update(); }, 300);
+    onScroll();
+  }, {passive:true});
   addEventListener('scroll', onScroll, {passive:true});
-  addEventListener('resize', onScroll, {passive:true});
   update();
 } else if (nav){
   addEventListener('scroll', function(){ nav.classList.toggle('scrolled', scrollY > 8); }, {passive:true});
@@ -241,7 +335,6 @@ window.submitForm = function(e){
       body: JSON.stringify(data)
     }).then(function(r){ done(r.ok); }).catch(function(){ done(false); });
   } else {
-    /* демо-режим: складываем заявки локально */
     try {
       var leads = JSON.parse(localStorage.getItem('leads') || '[]');
       leads.push(data);
@@ -260,19 +353,18 @@ if (modal){
     var f = modal.querySelector('input');
     if (f) setTimeout(function(){ f.focus(); }, 60);
   };
-  /* перехватываем все ссылки на форму с других страниц */
   document.addEventListener('click', function(e){
     var a = e.target.closest('a[href*="zayavka"]');
     if (!a) return;
     var url = new URL(a.getAttribute('href'), location.href);
     var samePage = url.pathname === location.pathname;
-    if (samePage && document.getElementById('zayavka')) return; /* якорь на этой же странице */
+    if (samePage && document.getElementById('zayavka')) return;
     e.preventDefault();
     openModal();
   });
   modal.querySelector('.modal-x').addEventListener('click', function(){ modal.close(); });
   modal.addEventListener('click', function(e){
-    if (e.target === modal) modal.close(); /* клик по подложке */
+    if (e.target === modal) modal.close();
   });
 }
 
