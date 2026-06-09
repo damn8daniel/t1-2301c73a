@@ -141,6 +141,17 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdr
 /* legal/normativ */
 .normbox{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:24px 28px;font-size:15px;color:var(--mut)}
 .normbox b{color:var(--ink)}
+.logo img{height:40px;width:auto;display:block}
+.teamphoto{width:100%;border-radius:16px;margin:6px 0 36px;border:1px solid rgba(255,255,255,.14);display:block}
+.pgal{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+@media(max-width:980px){.pgal{grid-template-columns:repeat(3,1fr)}}@media(max-width:560px){.pgal{grid-template-columns:repeat(2,1fr)}}
+.pcard{display:block;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;transition:transform .2s,box-shadow .2s}
+.pcard:hover{transform:translateY(-3px);box-shadow:0 18px 36px -22px rgba(15,27,51,.4)}
+.pcard img{width:100%;display:block;aspect-ratio:.72;object-fit:cover;object-position:top}
+.pnote{text-align:center;color:var(--mut);font-size:14px;margin-top:16px}
+.licfig{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 20px 50px -34px rgba(15,27,51,.5)}
+.licfig img{width:100%;border-radius:8px;display:block}
+.licfig figcaption{text-align:center;color:var(--mut);font-size:13px;margin-top:10px}
 /* contacts */
 .contacts{display:grid;grid-template-columns:1fr 1fr;gap:40px}
 @media(max-width:860px){.contacts{grid-template-columns:1fr}}
@@ -157,7 +168,7 @@ footer b{color:#EAF1FF}
 </style></head><body>
 
 <header><div class="w hbar">
-  <a class="logo" href="#"><span class="mk">🛡</span>Сенсор<b>·</b>Лицензирование</a>
+  <a class="logo" href="#"><img src="assets/real/logo.png" alt="Сенсор Лицензирование"></a>
   <nav class="hnav"><a href="#vidy">Виды работ</a><a href="#calc">Калькулятор</a><a href="#tarify">Цены</a><a href="#etapy">Этапы</a><a href="#otzyvy">Отзывы</a><a href="#faq">Вопросы</a></nav>
   <div class="hcontacts">
     <a class="hphone" href="tel:+78002220986">8 800 222‑09‑86<small>звонок бесплатный</small></a>
@@ -287,6 +298,7 @@ footer b{color:#EAF1FF}
 <section class="why"><div class="w">
   <div class="rv-an"><div class="eyebrow" style="color:#FF6068">Почему Сенсор</div>
   <h2 class="sec" style="color:#fff">Нам доверяют с 2016 года</h2></div>
+  <img class="teamphoto rv-an" src="assets/real/office.jpg" alt="Команда Сенсор Лицензирование">
   <div class="counters rv-an">
     <div class="counter"><div class="v">1600<b>+</b></div><div class="l">выданных лицензий МЧС</div></div>
     <div class="counter"><div class="v">9<b>лет</b></div><div class="l">на рынке лицензирования</div></div>
@@ -308,15 +320,18 @@ footer b{color:#EAF1FF}
   <h2 class="sec">Что говорят компании</h2></div>
   <div class="ratingbar rv-an">
     <div class="big">4.9 ★</div>
-    <div class="src">Яндекс.Карты <span>4.9 · 210 отзывов</span></div>
-    <div class="src">2ГИС <span>5.0 · 96 отзывов</span></div>
-    <div class="src">Google <span>4.8 · 144 отзыва</span></div>
+    <div class="src">По отзывам клиентов <span>на Яндекс.Картах, 2ГИС и Google</span></div>
+    <div class="src">Сотни выданных лицензий <span>с 2016 года</span></div>
   </div>
-  <div class="revs">
-    <div class="rev rv-an"><div class="stars">★★★★★</div><p>«Оформили лицензию МЧС на монтаж сигнализации под ключ за 17 дней. Сопроводили проверку, всё прошло с первого раза.»</p><div class="who">ООО «СтройМонтажСервис»</div><div class="date">19.02.2026</div></div>
-    <div class="rev rv-an"><div class="stars">★★★★★</div><p>«Брали оборудование в аренду и подбор специалистов. Без Сенсора сами бы не собрали пакет. Рекомендуем.»</p><div class="who">АО «ПромПожЗащита»</div><div class="date">28.01.2026</div></div>
-    <div class="rev rv-an"><div class="stars">★★★★★</div><p>«Нужна была срочно для тендера — успели за 10 дней. Договор с гарантией, оплата по этапам. Спасибо.»</p><div class="who">ООО «ГК Сигнал-Безопасность»</div><div class="date">26.12.2025</div></div>
+  <div class="pgal rv-an">
+    <a class="pcard" href="assets/real/pismo_1.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_1.jpg" alt="Благодарственное письмо клиента"></a>
+    <a class="pcard" href="assets/real/pismo_2.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_2.jpg" alt="Благодарственное письмо клиента"></a>
+    <a class="pcard" href="assets/real/pismo_3.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_3.jpg" alt="Благодарственное письмо клиента"></a>
+    <a class="pcard" href="assets/real/pismo_4.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_4.jpg" alt="Благодарственное письмо клиента"></a>
+    <a class="pcard" href="assets/real/pismo_5.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_5.jpg" alt="Благодарственное письмо клиента"></a>
+    <a class="pcard" href="assets/real/pismo_6.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_6.jpg" alt="Благодарственное письмо клиента"></a>
   </div>
+  <p class="pnote rv-an">Реальные благодарственные письма от компаний-клиентов. Нажмите, чтобы открыть скан.</p>
 </div></section>
 
 <section id="reestr"><div class="w">
@@ -326,12 +341,7 @@ footer b{color:#EAF1FF}
       <p class="sub" style="margin-bottom:18px">С 2021 года бумажную лицензию не выдают: сведения вносятся в реестр МЧС России и доступны по ИНН. Лицензия бессрочная, действует по всей РФ. Подтверждение лицензионных требований — раз в 3 года.</p>
       <div class="normbox rv-an"><b>Правовая база:</b> ФЗ‑99 «О лицензировании», ФЗ‑69 «О пожарной безопасности», Постановление Правительства РФ № 1128, Приказ МЧС № 571. <b>Работа без лицензии</b> — административная ответственность по КоАП (штрафы до 250 000 ₽ и приостановка деятельности до 90 суток).</div>
     </div>
-    <div class="rv-an"><div class="hform" style="box-shadow:0 24px 60px -36px rgba(15,27,51,.5)">
-      <h3>Проверим вашу лицензию или поможем получить</h3>
-      <p>Оставьте ИНН или контакт — проверим статус в реестре и подскажем, что нужно.</p>
-      <input placeholder="ИНН или телефон">
-      <button class="btn" onclick="openForm()" style="width:100%;justify-content:center">Проверить / получить</button>
-    </div></div>
+    <figure class="licfig rv-an"><img loading="lazy" src="assets/real/license-sample.png" alt="Образец лицензии МЧС"><figcaption>Так выглядит лицензия МЧС, которую вы получите</figcaption></figure>
   </div>
 </div></section>
 
