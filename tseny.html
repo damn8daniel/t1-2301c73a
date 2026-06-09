@@ -19,13 +19,15 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preload" href="assets/fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/main.css?v=7">
+<link rel="preload" href="assets/fonts/it-cyrillic-400_900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/it-latin-400_900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jbm-cyrillic-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/main.css?v=8">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://damn8daniel.github.io/t1-2301c73a/"}, {"@type": "ListItem", "position": 2, "name": "Цены", "item": "https://damn8daniel.github.io/t1-2301c73a/tseny.html"}]}</script>
 </head>
 <body>
 
+<div class="progress" aria-hidden="true"><i id="pbar"></i></div>
 <nav class="nav"><div class="nav-in">
   <a class="nav-logo" href="index.html"><img src="assets/real/logo.png" alt="Сенсор Лицензирование" width="125" height="45"></a>
   <div class="nav-links">
@@ -45,49 +47,49 @@
 </div></nav>
 
 <main>
-
 <div class="w crumbs"><a href="index.html">Главная</a><span>›</span>Цены</div>
 
-<section class="page-hero">
+<section class="hero" style="padding-top:28px;padding-bottom:0">
   <div class="w">
-    <h1 class="t-big">Цены и тарифы</h1>
-    <p class="t-lead">Прозрачные пакеты без скрытых доплат. Госпошлина оплачивается отдельно: 7 500 ₽ за выдачу, 3 500 ₽ за переоформление.</p>
+    <h1 class="d1" style="font-size:clamp(36px,5.8vw,88px)">Цены<br>и <span class="acc">тарифы</span></h1>
+    <div class="sub-row">
+      <p class="lead">Прозрачные пакеты без скрытых доплат. Госпошлина оплачивается отдельно: 7 500 ₽ за выдачу, 3 500 ₽ за переоформление.</p>
+    </div>
   </div>
 </section>
 <div data-mbar-after></div>
 
-<section class="sec sec-soft" style="padding-top:40px">
-  <div class="w-wide">
+<section class="blk" style="padding-top:24px">
+  <div class="w">
+
     <div class="plans">
       <div class="plan fx"><h3>Документы</h3><div class="price">35 000 ₽</div><div class="term">10 рабочих дней</div>
         <ul><li>Подготовка пакета документов</li><li>Проверка на соответствие требованиям</li><li>Консультация эксперта</li></ul>
-        <a class="btn ghost" href="kontakty.html#zayavka">Выбрать</a></div>
+        <a class="btn line" href="kontakty.html#zayavka">Выбрать</a></div>
       <div class="plan best fx"><div class="tag">Выбирают чаще всего</div><h3>Под ключ</h3><div class="price">от 80 000 ₽</div><div class="term">15-25 рабочих дней</div>
         <ul><li>Полное сопровождение до реестра</li><li>Подбор специалистов</li><li>Аренда поверенного оборудования</li><li>Сопровождение выездной проверки</li><li>Гарантия результата в договоре</li></ul>
-        <a class="btn" href="kontakty.html#zayavka">Выбрать</a></div>
+        <a class="btn" style="background:#fff;color:#0A0A0B;border-color:#fff" href="kontakty.html#zayavka">Выбрать</a></div>
       <div class="plan fx fx-d1"><h3>Срочно</h3><div class="price">от 130 000 ₽</div><div class="term">от 10 рабочих дней</div>
         <ul><li>Всё из тарифа «Под ключ»</li><li>Приоритетная подача</li><li>Ускоренное прохождение проверки</li></ul>
-        <a class="btn ghost" href="kontakty.html#zayavka">Выбрать</a></div>
+        <a class="btn line" href="kontakty.html#zayavka">Выбрать</a></div>
       <div class="plan fx fx-d2"><h3>Готовая фирма</h3><div class="price">от 299 000 ₽</div><div class="term">1-3 дня</div>
         <ul><li>ООО с действующей лицензией МЧС</li><li>Переоформление на вас</li><li>Чистая история компании</li></ul>
-        <a class="btn ghost" href="kontakty.html#zayavka">Выбрать</a></div>
+        <a class="btn line" href="kontakty.html#zayavka">Выбрать</a></div>
     </div>
   </div>
 </section>
 
-<section class="sec" id="calc">
+<section class="blk blk-paper blk-rule" id="calc">
   <div class="w">
-    <div class="sec-head">
-      <h2 class="t-h2">Рассчитайте под свою задачу</h2>
-      <p class="t-lead">Четыре вопроса, ориентир сразу на экране.</p>
-    </div>
+    <div class="head-row"><h2 class="d2">Рассчитайте под свою задачу</h2><span class="idx">4 вопроса · 1 минута</span></div>
+
     <div class="calc fx-scale">
       <div class="calc-q">
         <div class="cq"><div class="ql">1. Сколько видов работ нужно?</div><div class="opts" data-g="vid">
           <span class="opt on" data-v="0">1-2 вида</span><span class="opt" data-v="20000">3-5 видов</span><span class="opt" data-v="45000">6 и больше</span></div></div>
         <div class="cq"><div class="ql">2. Форма организации</div><div class="opts" data-g="org">
           <span class="opt on" data-v="0">ООО</span><span class="opt" data-v="-5000">ИП</span></div></div>
-        <div class="cq"><div class="ql">3. Специалисты и поверенное оборудование</div><div class="opts" data-g="res">
+        <div class="cq"><div class="ql">3. Специалисты и оборудование</div><div class="opts" data-g="res">
           <span class="opt on" data-v="0">Всё своё</span><span class="opt" data-v="30000">Нужна аренда оборудования</span><span class="opt" data-v="55000">Нужны и специалисты, и оборудование</span></div></div>
         <div class="cq"><div class="ql">4. Срочность</div><div class="opts" data-g="urg">
           <span class="opt on" data-v="0">Стандарт, 15-25 дней</span><span class="opt" data-v="40000">Срочно, от 10 дней</span></div></div>
@@ -96,16 +98,16 @@
         <div class="rl">Ориентир под ключ</div>
         <div class="rv" id="calcNum" aria-live="polite">от 35 000 ₽</div>
         <div class="rs" id="calcTerm">срок 15-25 рабочих дней, плюс госпошлина 7 500 ₽</div>
-        <a class="btn on-dark" href="kontakty.html#zayavka">Получить точный расчёт</a>
+        <a class="btn inv" href="kontakty.html#zayavka">Получить точный расчёт</a>
         <div class="note">Рассрочка 0% · оплата по этапам · без предоплаты</div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="sec sec-soft">
+<section class="blk">
   <div class="w">
-    <div class="sec-head"><h2 class="t-h2">Вопросы про оплату</h2></div>
+    <div class="head-row"><h2 class="d2">Вопросы про оплату</h2></div>
     <div class="faq">
       <div class="fi"><button class="fq">Есть ли предоплата?</button><div class="fa"><div><p>Нет. Работаем по этапам: оплата привязана к выполненным шагам из договора. Доступна рассрочка 0%.</p></div></div></div>
       <div class="fi"><button class="fq">Что входит в цену «под ключ»?</button><div class="fa"><div><p>Подбор специалистов, аренда поверенного оборудования, подготовка документов, подача через Госуслуги и сопровождение выездной проверки МЧС. Госпошлина 7 500 ₽ оплачивается отдельно.</p></div></div></div>
@@ -117,10 +119,11 @@
 
 </main>
 
-<footer><div class="w">
-  <div class="f-cols">
+<footer>
+  <div class="w"><div class="f-big">Сенсор<span>.</span></div></div>
+  <div class="w f-cols">
     <div class="f-brand">
-      <img src="assets/real/logo.png" alt="Сенсор Лицензирование" width="125" height="45">
+      <b>Сенсор Лицензирование</b>
       <p>Лицензии МЧС, СРО, ISO, электролаборатория и учебный центр. Работаем по всей России с 2016 года.</p>
     </div>
     <div><b>Услуги</b>
@@ -139,14 +142,14 @@
       <a href="kontakty.html">Москва, БП «Румянцево»,<br>корп. В, оф. 409В</a>
     </div>
   </div>
-  <div class="f-bottom">
+  <div class="w f-bottom">
     <div>© 2016-2026 ООО «НТЦ СпецПожСтандарт» · ИНН 7751144295</div>
     <div>Работаем по всей России</div>
   </div>
-</div></footer>
+</footer>
 
 <div class="mbar" id="mbar">
-  <a class="btn ghost" href="tel:+78002220986" style="background:#fff">Позвонить</a>
+  <a class="btn line" href="tel:+78002220986">Позвонить</a>
   <a class="btn" href="kontakty.html#zayavka">Заявка</a>
 </div>
 
@@ -157,13 +160,13 @@
     <p>Перезвоним в течение 15 минут в рабочее время, рассчитаем стоимость и срок.</p>
     <div class="fld"><label for="m-name">Ваше имя</label><input id="m-name" name="name" placeholder="Иван" required autocomplete="name"></div>
     <div class="fld"><label for="m-phone">Телефон</label><input id="m-phone" name="phone" type="tel" placeholder="+7 ___ ___-__-__" required autocomplete="tel"></div>
-    <button class="btn big" type="submit">Отправить</button>
+    <button class="btn" type="submit">Отправить</button>
     <div class="fine">Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных</div>
   </form>
 </dialog>
 
 <div class="toast" id="toast">Заявка принята. Перезвоним в течение 15 минут</div>
 
-<script src="assets/js/main.js?v=7" defer></script>
+<script src="assets/js/main.js?v=8" defer></script>
 </body>
 </html>

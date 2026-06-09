@@ -50,35 +50,10 @@ var cio = new IntersectionObserver(function(es){
 }, {threshold:.6});
 document.querySelectorAll('[data-cnt]').forEach(function(el){ cio.observe(el); });
 
-/* ---------- редакционный слой: номера глав + индикатор ---------- */
-function keySections(){
-  return [].slice.call(document.querySelectorAll('main section')).filter(function(s){
-    return s.offsetHeight > 250 && s.querySelector('h1,h2');
-  });
-}
-var chapEl = null, chapNum = null, chapTitle = null, keySecs = [];
-if (!reduce){
-  keySecs = keySections();
-  if (keySecs.length >= 3){
-    keySecs.forEach(function(s, i){
-      var g = document.createElement('span');
-      g.className = 'gnum ' + (i % 2 ? 'gnum-r' : 'gnum-l');
-      g.textContent = (i + 1 < 10 ? '0' : '') + (i + 1);
-      g.setAttribute('data-parallax', 16 + (i % 3) * 8);
-      g.setAttribute('aria-hidden', 'true');
-      s.appendChild(g);
-    });
-    chapEl = document.createElement('div');
-    chapEl.className = 'chapter';
-    chapEl.innerHTML = '<b>01</b><i></i><span></span>';
-    chapNum = chapEl.querySelector('b');
-    chapTitle = chapEl.querySelector('span');
-    document.body.appendChild(chapEl);
-  }
-}
-// дублируем дорожку бегущей строки для бесшовного цикла
-var mq2t = document.querySelector('.mq2 .tr');
-if (mq2t) mq2t.innerHTML += mq2t.innerHTML;
+/* ---------- тикер: дублируем дорожку для бесшовного цикла ---------- */
+var tkr = document.querySelector('.ticker .tr');
+if (tkr) tkr.innerHTML += tkr.innerHTML;
+var pbar = document.getElementById('pbar');
 
 /* ---------- скролл-движок ---------- */
 var scenes = [].slice.call(document.querySelectorAll('[data-scene]'));
@@ -119,17 +94,10 @@ function update(){
     heroFx.style.opacity = (1 - p * .9).toFixed(3);
     heroFx.style.transform = 'scale(' + (1 - p * .06).toFixed(4) + ') translateY(' + (p * -28).toFixed(1) + 'px)';
   }
-  // индикатор текущей главы
-  if (chapEl){
-    var idx = 0;
-    for (var ci = 0; ci < keySecs.length; ci++){
-      if (keySecs[ci].getBoundingClientRect().top < vh * .55) idx = ci;
-    }
-    chapNum.textContent = (idx + 1 < 10 ? '0' : '') + (idx + 1);
-    var ct = (keySecs[idx].querySelector('h1,h2').innerText || '').trim().replace(/\s+/g, ' ');
-    if (ct.length > 36) ct = ct.slice(0, 35).trim() + '…';
-    chapTitle.textContent = ct;
-    chapEl.classList.toggle('show', scrollY > vh * .5);
+  // прогресс страницы
+  if (pbar){
+    var docH = document.documentElement.scrollHeight - vh;
+    pbar.style.transform = 'scaleX(' + (docH > 0 ? clamp01(scrollY / docH) : 0).toFixed(4) + ')';
   }
   nav && nav.classList.toggle('scrolled', scrollY > 8);
 }

@@ -19,13 +19,15 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preload" href="assets/fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/main.css?v=7">
+<link rel="preload" href="assets/fonts/it-cyrillic-400_900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/it-latin-400_900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jbm-cyrillic-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/main.css?v=8">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://damn8daniel.github.io/t1-2301c73a/"}, {"@type": "ListItem", "position": 2, "name": "О компании", "item": "https://damn8daniel.github.io/t1-2301c73a/o-kompanii.html"}]}</script>
 </head>
 <body>
 
+<div class="progress" aria-hidden="true"><i id="pbar"></i></div>
 <nav class="nav"><div class="nav-in">
   <a class="nav-logo" href="index.html"><img src="assets/real/logo.png" alt="Сенсор Лицензирование" width="125" height="45"></a>
   <div class="nav-links">
@@ -45,56 +47,45 @@
 </div></nav>
 
 <main>
-
 <div class="w crumbs"><a href="index.html">Главная</a><span>›</span>О компании</div>
 
-<section class="page-hero">
+<section class="hero" style="padding-top:28px;padding-bottom:0">
   <div class="w">
-    <h1 class="t-big">Сенсор Лицензирование</h1>
-    <p class="t-lead">Помогаем бизнесу легально работать в сфере пожарной безопасности: лицензии МЧС, СРО, ISO, электролаборатория и собственный учебный центр.</p>
+    <h1 class="d1" style="font-size:clamp(36px,5.8vw,88px)">Сенсор<br><span class="acc">Лицензирование</span></h1>
+    <div class="sub-row">
+      <p class="lead">Помогаем бизнесу легально работать в сфере пожарной безопасности: лицензии МЧС, СРО, ISO, электролаборатория и собственный учебный центр.</p>
+    </div>
   </div>
 </section>
 <div data-mbar-after></div>
 
-<section class="sec" style="padding-top:32px">
-  <div class="w">
-    <div class="zoom-img fx-scale"><img src="assets/real/office.webp" width="1024" height="683" alt="Команда компании Сенсор Лицензирование в офисе" fetchpriority="high"></div>
+<div class="img-full zoom-img fx-scale"><img src="assets/real/office.webp" width="1024" height="683" alt="Команда компании Сенсор Лицензирование в офисе" fetchpriority="high"></div>
+
+<section class="blk">
+  <div class="w stats">
+    <div class="stat fx"><div class="v" data-cnt="1600" data-suf="+">0</div><div class="l mono dim">лицензий МЧС оформлено</div></div>
+    <div class="stat fx fx-d1"><div class="v"><span data-cnt="9">0</span> <i>лет</i></div><div class="l mono dim">на рынке, с 2016 года</div></div>
+    <div class="stat fx fx-d2"><div class="v" data-cnt="6">0</div><div class="l mono dim">филиалов по России</div></div>
+    <div class="stat fx fx-d3"><div class="v" data-cnt="20" data-suf="+">0</div><div class="l mono dim">госконтрактов сопровождено</div></div>
   </div>
 </section>
 
-<section class="sec sec-soft">
+<section class="blk blk-paper blk-rule">
   <div class="w">
-    <div class="stats">
-      <div class="stat fx"><div class="v" data-cnt="1600" data-suf="+">0</div><div class="l">лицензий МЧС оформлено</div></div>
-      <div class="stat fx fx-d1"><div class="v"><span data-cnt="9">0</span> <i>лет</i></div><div class="l">на рынке, с 2016 года</div></div>
-      <div class="stat fx fx-d2"><div class="v" data-cnt="6">0</div><div class="l">филиалов по России</div></div>
-      <div class="stat fx fx-d3"><div class="v" data-cnt="20" data-suf="+">0</div><div class="l">госконтрактов сопровождено</div></div>
-    </div>
-  </div>
-</section>
-
-<section class="sec">
-  <div class="w-wide">
-    <div class="sec-head">
-      <h2 class="t-h2">Почему с нами спокойно</h2>
-    </div>
-    <div class="tiles">
-      <div class="tile fx"><h3>Гарантия результата в договоре</h3><p>Если лицензию не выдадут по нашей вине, вернём оплату полностью. На практике 98% клиентов проходят проверку с первого раза.</p></div>
-      <div class="tile fx fx-d1"><h3>Рассрочка 0% и оплата по этапам</h3><p>Без предоплаты: платите по мере выполнения шагов из договора.</p></div>
-      <div class="tile fx"><h3>Своё поверенное оборудование</h3><p>Комплекты приборов по Приказу МЧС № 571 в аренду, поверка подтверждена в ФГИС «Аршин».</p></div>
-      <div class="tile fx fx-d1" id="centr"><h3>Собственный учебный центр</h3><p>Повышение квалификации и аттестация специалистов под лицензионные требования, без посредников.</p></div>
-      <div class="tile dark span2 fx"><h3>Работаем по всей России</h3><p>Шесть филиалов и полностью удалённое оформление: документы, подача и сопровождение проверки без вашего приезда в Москву.</p>
-        <a class="alink" href="kontakty.html">Связаться с нами</a></div>
+    <div class="head-row"><h2 class="d2">Почему с нами спокойно</h2></div>
+    <div class="grid2">
+      <div class="cell fx"><span class="num">Гарантия</span><h3>Результат в договоре</h3><p>Если лицензию не выдадут по нашей вине, вернём оплату полностью. На практике 98% клиентов проходят проверку с первого раза.</p></div>
+      <div class="cell fx fx-d1"><span class="num">Оплата</span><h3>Рассрочка 0% и оплата по этапам</h3><p>Без предоплаты: платите по мере выполнения шагов из договора.</p></div>
+      <div class="cell fx"><span class="num">Оборудование</span><h3>Своё, поверенное</h3><p>Комплекты приборов по Приказу МЧС № 571 в аренду, поверка подтверждена в ФГИС «Аршин».</p></div>
+      <div class="cell fx fx-d1" id="centr"><span class="num">Обучение</span><h3>Собственный учебный центр</h3><p>Повышение квалификации и аттестация специалистов под лицензионные требования, без посредников.</p></div>
+      <div class="cell fill fx" style="grid-column:1/-1"><span class="num">География</span><h3>Работаем по всей России</h3><p>Шесть филиалов и полностью удалённое оформление: документы, подача и сопровождение проверки без вашего приезда в Москву.</p></div>
     </div>
   </div>
 </section>
 
-<section class="sec sec-soft" style="overflow:hidden">
+<section class="blk" style="padding-bottom:0">
   <div class="w">
-    <div class="sec-head">
-      <h2 class="t-h2">Письма от клиентов</h2>
-      <p class="t-lead">4.9 из 5 по 450+ отзывам на Яндекс Картах, 2ГИС и Google.</p>
-    </div>
+    <div class="head-row"><h2 class="d2">Письма от клиентов</h2><span class="idx">4.9 ★ · 450+ отзывов</span></div>
   </div>
   <div class="hscroll">
     <a class="hcard-img" href="assets/real/pismo_1.webp" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_1.webp" width="815" height="1127" alt="Благодарственное письмо клиента, скан 1"></a>
@@ -106,7 +97,7 @@
   </div>
 </section>
 
-<section class="sec">
+<section class="blk">
   <div class="w prose">
     <h2>Реквизиты</h2>
     <div class="callout">
@@ -120,10 +111,11 @@
 
 </main>
 
-<footer><div class="w">
-  <div class="f-cols">
+<footer>
+  <div class="w"><div class="f-big">Сенсор<span>.</span></div></div>
+  <div class="w f-cols">
     <div class="f-brand">
-      <img src="assets/real/logo.png" alt="Сенсор Лицензирование" width="125" height="45">
+      <b>Сенсор Лицензирование</b>
       <p>Лицензии МЧС, СРО, ISO, электролаборатория и учебный центр. Работаем по всей России с 2016 года.</p>
     </div>
     <div><b>Услуги</b>
@@ -142,14 +134,14 @@
       <a href="kontakty.html">Москва, БП «Румянцево»,<br>корп. В, оф. 409В</a>
     </div>
   </div>
-  <div class="f-bottom">
+  <div class="w f-bottom">
     <div>© 2016-2026 ООО «НТЦ СпецПожСтандарт» · ИНН 7751144295</div>
     <div>Работаем по всей России</div>
   </div>
-</div></footer>
+</footer>
 
 <div class="mbar" id="mbar">
-  <a class="btn ghost" href="tel:+78002220986" style="background:#fff">Позвонить</a>
+  <a class="btn line" href="tel:+78002220986">Позвонить</a>
   <a class="btn" href="kontakty.html#zayavka">Заявка</a>
 </div>
 
@@ -160,13 +152,13 @@
     <p>Перезвоним в течение 15 минут в рабочее время, рассчитаем стоимость и срок.</p>
     <div class="fld"><label for="m-name">Ваше имя</label><input id="m-name" name="name" placeholder="Иван" required autocomplete="name"></div>
     <div class="fld"><label for="m-phone">Телефон</label><input id="m-phone" name="phone" type="tel" placeholder="+7 ___ ___-__-__" required autocomplete="tel"></div>
-    <button class="btn big" type="submit">Отправить</button>
+    <button class="btn" type="submit">Отправить</button>
     <div class="fine">Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных</div>
   </form>
 </dialog>
 
 <div class="toast" id="toast">Заявка принята. Перезвоним в течение 15 минут</div>
 
-<script src="assets/js/main.js?v=7" defer></script>
+<script src="assets/js/main.js?v=8" defer></script>
 </body>
 </html>
