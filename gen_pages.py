@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Генератор остальных страниц: общий шаблон шапки/футера + тела страниц."""
-import io
+"""Генератор страниц: общий шаблон шапки/футера/модалки + тела страниц."""
+import io, json
+
+SITE = 'https://damn8daniel.github.io/t1-2301c73a/'
 
 HEAD = '''<!doctype html>
 <html lang="ru">
@@ -10,15 +12,27 @@ HEAD = '''<!doctype html>
 <title>{title}</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="description" content="{desc}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Сенсор Лицензирование">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="{title}">
+<meta property="og:description" content="{desc}">
+<meta property="og:url" content="{url}">
+<meta property="og:image" content="{site}assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="assets/fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/main.css">
 {extra_head}</head>
 <body>
 
 <nav class="nav"><div class="nav-in">
-  <a class="nav-logo" href="index.html"><img src="assets/real/logo.png" alt="Сенсор Лицензирование"></a>
+  <a class="nav-logo" href="index.html"><img src="assets/real/logo.png" alt="Сенсор Лицензирование" width="125" height="45"></a>
   <div class="nav-links">
     <a {a1} href="licenziya-mchs.html">Лицензия МЧС</a>
     <a {a2} href="vidy-rabot.html">Виды работ</a>
@@ -26,6 +40,7 @@ HEAD = '''<!doctype html>
     <a {a4} href="proverka.html">Проверка лицензии</a>
     <a {a5} href="o-kompanii.html">О компании</a>
     <a {a6} href="kontakty.html">Контакты</a>
+    <a class="mtel" href="tel:+78002220986">8 800 222-09-86</a>
   </div>
   <div class="nav-right">
     <a class="nav-tel" href="tel:+78002220986">8 800 222-09-86</a>
@@ -45,7 +60,7 @@ FOOT = '''
 <footer><div class="w">
   <div class="f-cols">
     <div class="f-brand">
-      <img src="assets/real/logo.png" alt="Сенсор Лицензирование">
+      <img src="assets/real/logo.png" alt="Сенсор Лицензирование" width="125" height="45">
       <p>Лицензии МЧС, СРО, ISO, электролаборатория и учебный центр. Работаем по всей России с 2016 года.</p>
     </div>
     <div><b>Услуги</b>
@@ -74,6 +89,19 @@ FOOT = '''
   <a class="btn ghost" href="tel:+78002220986" style="background:#fff">Позвонить</a>
   <a class="btn" href="kontakty.html#zayavka">Заявка</a>
 </div>
+
+<dialog class="modal" id="leadModal">
+  <button class="modal-x" aria-label="Закрыть"></button>
+  <form class="form" onsubmit="return submitForm(event)">
+    <h3>Оставить заявку</h3>
+    <p>Перезвоним в течение 15 минут в рабочее время, рассчитаем стоимость и срок.</p>
+    <div class="fld"><label for="m-name">Ваше имя</label><input id="m-name" name="name" placeholder="Иван" required autocomplete="name"></div>
+    <div class="fld"><label for="m-phone">Телефон</label><input id="m-phone" name="phone" type="tel" placeholder="+7 ___ ___-__-__" required autocomplete="tel"></div>
+    <button class="btn big" type="submit">Отправить</button>
+    <div class="fine">Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных</div>
+  </form>
+</dialog>
+
 <div class="toast" id="toast">Заявка принята. Перезвоним в течение 15 минут</div>
 
 <script src="assets/js/main.js" defer></script>
@@ -81,54 +109,66 @@ FOOT = '''
 </html>
 '''
 
+def breadcrumb_ld(crumb, fname):
+    data = {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Главная","item":SITE},
+        {"@type":"ListItem","position":2,"name":crumb,"item":SITE+fname}]}
+    return '<script type="application/ld+json">' + json.dumps(data, ensure_ascii=False) + '</script>\n'
+
 def page(fname, nav_idx, title, desc, crumb, body, extra_head=''):
     acts = ['' for _ in range(6)]
     if nav_idx is not None:
         acts[nav_idx] = 'class="act"'
-    html = HEAD.format(title=title, desc=desc, crumb=crumb, extra_head=extra_head,
+    extra = breadcrumb_ld(crumb, fname) + extra_head
+    html = HEAD.format(title=title, desc=desc, crumb=crumb, extra_head=extra,
+                       url=SITE+fname, site=SITE,
                        a1=acts[0], a2=acts[1], a3=acts[2], a4=acts[3], a5=acts[4], a6=acts[5]) + body + FOOT
     with io.open(fname, 'w', encoding='utf-8') as f:
         f.write(html)
     print('written', fname)
 
+LETTERS = '\n'.join(
+    f'    <a class="hcard-img" href="assets/real/pismo_{i}.webp" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_{i}.webp" width="815" height="1127" alt="Благодарственное письмо клиента, скан {i}"></a>'
+    for i in range(1, 7))
+
 # ============================================================ vidy-rabot
-VIDY = u'''
+V = [
+ ('01','Системы пожаротушения','Монтаж, ТО и ремонт водяного, пенного, газового, порошкового и аэрозольного пожаротушения, включая пусконаладку. Самый востребованный вид: ТЦ, склады, производства, бизнес-центры.'),
+ ('02','Пожарная сигнализация','АПС и ОПС, системы передачи извещений, диспетчеризация, пусконаладка. Нужен всем, кто ставит и обслуживает датчики и приёмно-контрольные приборы.'),
+ ('03','Противопожарное водоснабжение','Внутренний противопожарный водопровод, наружные сети, пожарные гидранты, насосные станции.'),
+ ('04','Противодымная вентиляция','Системы дымоудаления и подпора воздуха, огнезадерживающие клапаны, вентиляторы дымоудаления.'),
+ ('05','СОУЭ','Системы оповещения и управления эвакуацией людей при пожаре всех пяти типов.'),
+ ('06','Противопожарные преграды','Противопожарные двери, ворота, люки, окна, шторы: монтаж и обслуживание заполнений проёмов.'),
+ ('07','Огнезащита','Огнезащитная обработка металлических и деревянных конструкций, кабелей, воздуховодов, тканей.'),
+ ('08','Первичные средства','Огнетушители, пожарные шкафы, краны и рукава: установка, перезарядка, обслуживание.'),
+ ('09','Тушение пожаров','Тушение пожаров в населённых пунктах и на объектах. Отдельное лицензирование с повышенными требованиями к персоналу и технике.'),
+]
+VIDY = '''
 <section class="page-hero">
   <div class="w">
     <h1 class="t-big">Виды работ<br>по лицензии МЧС</h1>
-    <p class="t-lead">Девять видов деятельности по Постановлению Правительства РФ № 1128. Разбираем, что входит в каждый и кому он нужен.</p>
+    <p class="t-lead">Девять видов деятельности по Постановлению Правительства РФ № 1128. Оформим лицензию на любой набор: от одного вида до всех девяти.</p>
   </div>
 </section>
 <div data-mbar-after></div>
 
 <section class="sec sec-soft" style="padding-top:48px">
-  <div class="w prose">
-    <h2>1. Монтаж, ТО и ремонт систем пожаротушения</h2>
-    <p>Водяное, пенное, газовое, порошковое и аэрозольное пожаротушение, включая их элементы и пусконаладку. Самый востребованный вид: его выбирают монтажные организации, обслуживающие ТЦ, склады, производства и бизнес-центры.</p>
-    <h2>2. Монтаж, ТО и ремонт пожарной и охранно-пожарной сигнализации</h2>
-    <p>АПС и ОПС, системы передачи извещений, диспетчеризация и пусконаладочные работы. Нужен всем, кто ставит и обслуживает датчики, приёмно-контрольные приборы и оповещатели.</p>
-    <h2>3. Монтаж, ТО и ремонт противопожарного водоснабжения</h2>
-    <p>Внутренний противопожарный водопровод, наружные сети, пожарные гидранты, насосные станции.</p>
-    <h2>4. Монтаж, ТО и ремонт противодымной вентиляции</h2>
-    <p>Системы дымоудаления и подпора воздуха, включая огнезадерживающие клапаны и вентиляторы дымоудаления.</p>
-    <h2>5. Монтаж, ТО и ремонт СОУЭ</h2>
-    <p>Системы оповещения и управления эвакуацией людей при пожаре всех пяти типов.</p>
-    <h2>6. Заполнение проёмов в противопожарных преградах</h2>
-    <p>Противопожарные двери, ворота, люки, окна и шторы, а также их обслуживание.</p>
-    <h2>7. Огнезащита материалов, изделий и конструкций</h2>
-    <p>Огнезащитная обработка металлических и деревянных конструкций, кабелей, воздуховодов, тканей.</p>
-    <h2>8. Монтаж, ТО и ремонт первичных средств пожаротушения</h2>
-    <p>Огнетушители, пожарные шкафы, краны и рукава: установка, перезарядка, обслуживание.</p>
-    <h2>9. Деятельность по тушению пожаров</h2>
-    <p>Тушение пожаров в населённых пунктах, на производственных объектах и объектах инфраструктуры. Отдельное лицензирование с повышенными требованиями к персоналу и технике.</p>
-    <div class="callout"><b>Не знаете, какие виды выбрать?</b> Подберём оптимальный набор под ваши контракты и тендеры: лишние виды удорожают лицензию, недостающие блокируют работу.</div>
+  <div class="w-wide">
+    <div class="vlist">
+''' + '\n'.join(
+    f'      <article class="vcard fx"><span class="vn">{n}</span><h2>{t}</h2><p>{d}</p></article>'
+    for n, t, d in V) + '''
+    </div>
+    <div class="w" style="max-width:760px;padding:48px 0 0">
+      <div class="callout fx"><b>Не знаете, какие виды выбрать?</b> Подберём оптимальный набор под ваши контракты и тендеры: лишние виды удорожают лицензию, недостающие блокируют работу. Консультация бесплатная.</div>
+    </div>
   </div>
 </section>
 
 <section class="sec cta-final">
   <div class="w">
     <h2 class="t-big fx">Оформим на любой набор видов</h2>
-    <p class="t-lead fx fx-d1">От одного вида до всех девяти. Цена и срок зависят от набора: рассчитайте за минуту.</p>
+    <p class="t-lead fx fx-d1">Цена и срок зависят от набора: рассчитайте за минуту.</p>
     <div class="hero-cta fx fx-d2">
       <a class="btn big" href="licenziya-mchs.html#calc">Рассчитать стоимость</a>
       <a class="btn big ghost" href="tel:+78002220986">8 800 222-09-86</a>
@@ -138,7 +178,7 @@ VIDY = u'''
 '''
 
 # ============================================================ tseny
-TSENY = u'''
+TSENY = '''
 <section class="page-hero">
   <div class="w">
     <h1 class="t-big">Цены и тарифы</h1>
@@ -208,33 +248,43 @@ TSENY = u'''
 '''
 
 # ============================================================ proverka
-PROVERKA = u'''
+PROVERKA = '''
 <section class="page-hero">
   <div class="w">
     <h1 class="t-big">Проверка лицензии МЧС<br>в реестре</h1>
-    <p class="t-lead">С 2021 года лицензия существует только как запись в реестре МЧС России. Рассказываем, как проверить себя или подрядчика за пару минут.</p>
+    <p class="t-lead">С 2021 года лицензия существует только как запись в реестре МЧС России. Проверить себя или подрядчика можно за пару минут.</p>
   </div>
 </section>
 <div data-mbar-after></div>
 
 <section class="sec sec-soft" style="padding-top:48px">
+  <div class="w">
+    <div class="sec-head"><h2 class="t-h2">Три шага</h2></div>
+    <div class="checksteps">
+      <div class="cstep fx"><div class="cn"></div><h3>Откройте реестр МЧС</h3><p>Реестр лицензий опубликован на официальном сайте МЧС России и доступен без регистрации.</p></div>
+      <div class="cstep fx fx-d1"><div class="cn"></div><h3>Введите ИНН</h3><p>Достаточно ИНН организации или ИП. Название тоже работает, но ИНН надёжнее: исключает однофамильцев.</p></div>
+      <div class="cstep fx fx-d2"><div class="cn"></div><h3>Сверьте карточку</h3><p>Статус лицензии, перечень разрешённых видов работ и дата записи. Виды работ должны покрывать предмет вашего договора.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
   <div class="w prose">
-    <h2>Как проверить лицензию по ИНН</h2>
-    <p>Откройте реестр лицензий на официальном сайте МЧС России и введите ИНН организации или ИП. В карточке вы увидите статус лицензии, перечень разрешённых видов работ и дату внесения записи.</p>
+    <h2>Как читать результат</h2>
     <ul>
-      <li>Запись есть и статус действующий: подрядчик имеет право выполнять указанные виды работ.</li>
-      <li>Записи нет: лицензия отсутствует, договор с таким подрядчиком несёт риски для заказчика.</li>
-      <li>Виды работ в карточке не совпадают с предметом договора: подрядчик выходит за рамки своей лицензии.</li>
+      <li><b>Запись есть, статус действующий:</b> подрядчик имеет право выполнять указанные виды работ.</li>
+      <li><b>Записи нет:</b> лицензия отсутствует, договор с таким подрядчиком несёт риски для заказчика.</li>
+      <li><b>Виды работ не совпадают с договором:</b> подрядчик выходит за рамки своей лицензии.</li>
     </ul>
-    <div class="callout"><b>Важно:</b> бумажный бланк лицензии сам по себе ничего не подтверждает с 2021 года. Юридическую силу имеет только запись в реестре.</div>
+    <div class="callout"><b>Важно:</b> бумажный бланк сам по себе ничего не подтверждает с 2021 года. Юридическую силу имеет только запись в реестре.</div>
     <h2>Что проверить кроме реестра</h2>
-    <p>Для тендеров и крупных контрактов дополнительно смотрят выписку ЕГРЮЛ, наличие штатных специалистов и действующую поверку оборудования. Эти требования МЧС проверяет и при периодическом подтверждении раз в 3 года.</p>
+    <p>Для тендеров и крупных контрактов дополнительно смотрят выписку ЕГРЮЛ, наличие штатных специалистов и действующую поверку оборудования. Эти же требования МЧС проверяет при периодическом подтверждении раз в 3 года.</p>
     <h2>Поможем разобраться</h2>
     <p>Если со статусом что-то не так: лицензии нет, виды работ не совпадают или подходит срок периодического подтверждения, позвоните нам. Подскажем бесплатно, что делать дальше.</p>
   </div>
 </section>
 
-<section class="sec cta-final">
+<section class="sec sec-soft cta-final">
   <div class="w">
     <h2 class="t-big fx">Нужна своя лицензия?</h2>
     <p class="t-lead fx fx-d1">Оформим под ключ за 15-25 рабочих дней с гарантией в договоре.</p>
@@ -247,7 +297,7 @@ PROVERKA = u'''
 '''
 
 # ============================================================ o-kompanii
-OKOMP = u'''
+OKOMP = '''
 <section class="page-hero">
   <div class="w">
     <h1 class="t-big">Сенсор Лицензирование</h1>
@@ -258,7 +308,7 @@ OKOMP = u'''
 
 <section class="sec" style="padding-top:32px">
   <div class="w">
-    <div class="zoom-img fx-scale"><img src="assets/real/office.jpg" alt="Команда компании Сенсор Лицензирование в офисе" fetchpriority="high"></div>
+    <div class="zoom-img fx-scale"><img src="assets/real/office.webp" width="1024" height="683" alt="Команда компании Сенсор Лицензирование в офисе" fetchpriority="high"></div>
   </div>
 </section>
 
@@ -297,12 +347,7 @@ OKOMP = u'''
     </div>
   </div>
   <div class="hscroll">
-    <a class="hcard-img" href="assets/real/pismo_1.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_1.jpg" alt="Благодарственное письмо клиента, скан 1"></a>
-    <a class="hcard-img" href="assets/real/pismo_2.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_2.jpg" alt="Благодарственное письмо клиента, скан 2"></a>
-    <a class="hcard-img" href="assets/real/pismo_3.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_3.jpg" alt="Благодарственное письмо клиента, скан 3"></a>
-    <a class="hcard-img" href="assets/real/pismo_4.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_4.jpg" alt="Благодарственное письмо клиента, скан 4"></a>
-    <a class="hcard-img" href="assets/real/pismo_5.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_5.jpg" alt="Благодарственное письмо клиента, скан 5"></a>
-    <a class="hcard-img" href="assets/real/pismo_6.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_6.jpg" alt="Благодарственное письмо клиента, скан 6"></a>
+''' + LETTERS + '''
   </div>
 </section>
 
@@ -320,7 +365,7 @@ OKOMP = u'''
 '''
 
 # ============================================================ kontakty
-KONTAKTY = u'''
+KONTAKTY = '''
 <section class="page-hero">
   <div class="w">
     <h1 class="t-big">Контакты</h1>
@@ -358,26 +403,26 @@ KONTAKTY = u'''
 '''
 
 page('vidy-rabot.html', 1,
-     u'Виды работ по лицензии МЧС: все 9 видов деятельности по ПП № 1128 | Сенсор',
-     u'Какие виды работ входят в лицензию МЧС: пожаротушение, сигнализация, водопровод, дымоудаление, СОУЭ, двери, огнезащита, первичные средства, тушение пожаров.',
-     u'Виды работ', VIDY)
+     'Виды работ по лицензии МЧС: все 9 видов деятельности по ПП № 1128 | Сенсор',
+     'Какие виды работ входят в лицензию МЧС: пожаротушение, сигнализация, водопровод, дымоудаление, СОУЭ, двери, огнезащита, первичные средства, тушение пожаров.',
+     'Виды работ', VIDY)
 
 page('tseny.html', 2,
-     u'Цены на лицензию МЧС 2026: тарифы от 35 000 ₽, калькулятор | Сенсор',
-     u'Сколько стоит лицензия МЧС: тарифы от 35 000 ₽, под ключ от 80 000 ₽, срочно от 130 000 ₽. Калькулятор стоимости, рассрочка 0%, оплата по этапам.',
-     u'Цены', TSENY)
+     'Цены на лицензию МЧС 2026: тарифы от 35 000 ₽, калькулятор | Сенсор',
+     'Сколько стоит лицензия МЧС: тарифы от 35 000 ₽, под ключ от 80 000 ₽, срочно от 130 000 ₽. Калькулятор стоимости, рассрочка 0%, оплата по этапам.',
+     'Цены', TSENY)
 
 page('proverka.html', 3,
-     u'Проверка лицензии МЧС в реестре по ИНН: инструкция | Сенсор',
-     u'Как проверить лицензию МЧС в реестре по ИНН: пошаговая инструкция, на что смотреть в карточке, какие риски у работы с подрядчиком без лицензии.',
-     u'Проверка лицензии', PROVERKA)
+     'Проверка лицензии МЧС в реестре по ИНН: инструкция | Сенсор',
+     'Как проверить лицензию МЧС в реестре по ИНН: пошаговая инструкция, на что смотреть в карточке, какие риски у работы с подрядчиком без лицензии.',
+     'Проверка лицензии', PROVERKA)
 
 page('o-kompanii.html', 4,
-     u'О компании Сенсор Лицензирование: 1600+ лицензий МЧС с 2016 года',
-     u'Сенсор Лицензирование: лицензии МЧС, СРО, ISO, учебный центр. 9 лет на рынке, 6 филиалов, 1600+ оформленных лицензий, рейтинг 4.9.',
-     u'О компании', OKOMP)
+     'О компании Сенсор Лицензирование: 1600+ лицензий МЧС с 2016 года',
+     'Сенсор Лицензирование: лицензии МЧС, СРО, ISO, учебный центр. 9 лет на рынке, 6 филиалов, 1600+ оформленных лицензий, рейтинг 4.9.',
+     'О компании', OKOMP)
 
 page('kontakty.html', 5,
-     u'Контакты Сенсор Лицензирование: 8 800 222-09-86, Москва, БП Румянцево',
-     u'Контакты компании Сенсор Лицензирование: телефон 8 800 222-09-86 (бесплатно по РФ), офис в Москве, БП Румянцево. Заявка на лицензию МЧС онлайн.',
-     u'Контакты', KONTAKTY)
+     'Контакты Сенсор Лицензирование: 8 800 222-09-86, Москва, БП Румянцево',
+     'Контакты компании Сенсор Лицензирование: телефон 8 800 222-09-86 (бесплатно по РФ), офис в Москве, БП Румянцево. Заявка на лицензию МЧС онлайн.',
+     'Контакты', KONTAKTY)

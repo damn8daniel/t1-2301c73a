@@ -1,14 +1,27 @@
-/* Сенсор Лицензирование · общий JS: скролл-движок, навигация, формы, калькулятор */
+/* Сенсор Лицензирование · общий JS: скролл-движок, навигация, формы, модалка, калькулятор */
 (function(){
 'use strict';
 var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/* Куда отправлять заявки. Поддерживается formsubmit.co / formspree / свой вебхук.
+   Пусто = демо-режим: заявка сохраняется в localStorage и показывается тост. */
+var LEAD_ENDPOINT = '';
+
 /* ---------- навигация ---------- */
 var nav = document.querySelector('.nav');
 var burger = document.querySelector('.nav-burger');
-if (burger) burger.addEventListener('click', function(){ nav.classList.toggle('open'); });
+if (burger){
+  burger.setAttribute('aria-expanded','false');
+  burger.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
 document.querySelectorAll('.nav-links a').forEach(function(a){
-  a.addEventListener('click', function(){ nav.classList.remove('open'); });
+  a.addEventListener('click', function(){
+    nav.classList.remove('open');
+    burger && burger.setAttribute('aria-expanded','false');
+  });
 });
 
 /* ---------- появление блоков ---------- */
@@ -37,7 +50,7 @@ var cio = new IntersectionObserver(function(es){
 }, {threshold:.6});
 document.querySelectorAll('[data-cnt]').forEach(function(el){ cio.observe(el); });
 
-/* ---------- скролл-движок: прогресс сцен + параллакс + слова ---------- */
+/* ---------- скролл-движок ---------- */
 var scenes = [].slice.call(document.querySelectorAll('[data-scene]'));
 var plxEls = [].slice.call(document.querySelectorAll('[data-parallax]'));
 var wordScenes = [].slice.call(document.querySelectorAll('.wordscene')).map(function(s){
@@ -51,16 +64,12 @@ function clamp01(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
 function update(){
   ticking = false;
   var vh = innerHeight;
-
-  // прогресс длинных сцен: 0 в момент прилипания, 1 на излёте
   scenes.forEach(function(s){
     var r = s.getBoundingClientRect();
     var total = r.height - vh;
     if (total <= 0) return;
     s.style.setProperty('--p', clamp01(-r.top / total).toFixed(4));
   });
-
-  // покадровое проявление слов
   wordScenes.forEach(function(ws){
     var r = ws.el.getBoundingClientRect();
     var total = r.height - vh;
@@ -69,26 +78,19 @@ function update(){
     var lit = Math.floor(p * (ws.words.length + 2));
     ws.words.forEach(function(w, i){ w.classList.toggle('lit', i < lit); });
   });
-
-  // параллакс картинок
   plxEls.forEach(function(el){
     var r = el.getBoundingClientRect();
-    var center = (r.top + r.height / 2 - vh / 2) / vh; // -1..1
+    var center = (r.top + r.height / 2 - vh / 2) / vh;
     var depth = +el.dataset.parallax || 30;
     el.style.transform = 'translateY(' + (center * -depth).toFixed(1) + 'px)';
   });
-
-  // hero: лёгкое уменьшение и растворение при прокрутке
   if (heroFx){
     var p = clamp01(scrollY / (vh * .9));
     heroFx.style.opacity = (1 - p * .9).toFixed(3);
     heroFx.style.transform = 'scale(' + (1 - p * .06).toFixed(4) + ') translateY(' + (p * -28).toFixed(1) + 'px)';
   }
-
-  // тень навигации
   nav && nav.classList.toggle('scrolled', scrollY > 8);
 }
-
 function onScroll(){
   if (!ticking){ requestAnimationFrame(update); ticking = true; }
 }
@@ -130,14 +132,94 @@ if (calcNum){
   calc();
 }
 
-/* ---------- формы и тост ---------- */
+/* ---------- маска телефона ---------- */
+document.querySelectorAll('input[type="tel"]').forEach(function(inp){
+  inp.addEventListener('input', function(){
+    var d = inp.value.replace(/\D/g, '');
+    if (d.charAt(0) === '8') d = '7' + d.slice(1);
+    if (d && d.charAt(0) !== '7') d = '7' + d;
+    d = d.slice(0, 11);
+    var out = '';
+    if (d.length){ out = '+7'; }
+    if (d.length > 1) out += ' ' + d.slice(1, 4);
+    if (d.length > 4) out += ' ' + d.slice(4, 7);
+    if (d.length > 7) out += '-' + d.slice(7, 9);
+    if (d.length > 9) out += '-' + d.slice(9, 11);
+    inp.value = out;
+  });
+});
+
+/* ---------- отправка заявки ---------- */
+function showToast(msg){
+  var t = document.getElementById('toast');
+  if (!t) return;
+  if (msg) t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 4000);
+}
 window.submitForm = function(e){
   e.preventDefault();
-  var t = document.getElementById('toast');
-  if (t){ t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 4000); }
-  e.target.reset();
+  var form = e.target;
+  var data = {
+    name: (form.querySelector('[name="name"]') || {}).value || '',
+    phone: (form.querySelector('[name="phone"]') || {}).value || '',
+    page: location.pathname,
+    ts: new Date().toISOString()
+  };
+  var btn = form.querySelector('[type="submit"]');
+  var done = function(ok){
+    if (btn) btn.disabled = false;
+    if (ok){
+      form.reset();
+      var dlg = form.closest('dialog');
+      if (dlg) dlg.close();
+      showToast('Заявка принята. Перезвоним в течение 15 минут');
+    } else {
+      showToast('Не получилось отправить. Позвоните: 8 800 222-09-86');
+    }
+  };
+  if (btn) btn.disabled = true;
+  if (LEAD_ENDPOINT){
+    fetch(LEAD_ENDPOINT, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify(data)
+    }).then(function(r){ done(r.ok); }).catch(function(){ done(false); });
+  } else {
+    /* демо-режим: складываем заявки локально */
+    try {
+      var leads = JSON.parse(localStorage.getItem('leads') || '[]');
+      leads.push(data);
+      localStorage.setItem('leads', JSON.stringify(leads));
+    } catch(_){}
+    setTimeout(function(){ done(true); }, 350);
+  }
   return false;
 };
+
+/* ---------- модалка заявки ---------- */
+var modal = document.getElementById('leadModal');
+if (modal){
+  var openModal = function(){
+    modal.showModal();
+    var f = modal.querySelector('input');
+    if (f) setTimeout(function(){ f.focus(); }, 60);
+  };
+  /* перехватываем все ссылки на форму с других страниц */
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href*="zayavka"]');
+    if (!a) return;
+    var url = new URL(a.getAttribute('href'), location.href);
+    var samePage = url.pathname === location.pathname;
+    if (samePage && document.getElementById('zayavka')) return; /* якорь на этой же странице */
+    e.preventDefault();
+    openModal();
+  });
+  modal.querySelector('.modal-x').addEventListener('click', function(){ modal.close(); });
+  modal.addEventListener('click', function(e){
+    if (e.target === modal) modal.close(); /* клик по подложке */
+  });
+}
 
 /* ---------- мобильная панель после первого экрана ---------- */
 var mbar = document.getElementById('mbar');
