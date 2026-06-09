@@ -27,7 +27,7 @@ HEAD = '''<!doctype html>
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="assets/fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/main.css">
+<link rel="stylesheet" href="assets/css/main.css?v=4">
 {extra_head}</head>
 <body>
 
