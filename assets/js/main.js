@@ -50,6 +50,44 @@ var cio = new IntersectionObserver(function(es){
 }, {threshold:.6});
 document.querySelectorAll('[data-cnt]').forEach(function(el){ cio.observe(el); });
 
+
+/* ---------- боковые украшения: орбы + скролл-хребет ---------- */
+var orbs = [], spineFill = null, spineDots = [], spineSecs = [];
+if (!reduce){
+  for (var oi = 1; oi <= 4; oi++){
+    var o = document.createElement('div');
+    o.className = 'orb orb-' + oi;
+    document.body.appendChild(o);
+    orbs.push(o);
+  }
+  (function buildSpine(){
+    var secs = [].slice.call(document.querySelectorAll('main section')).filter(function(s){
+      return s.offsetHeight > 250 && s.querySelector('h1,h2');
+    });
+    if (secs.length < 3) return;
+    var sp = document.createElement('nav');
+    sp.className = 'spine';
+    sp.setAttribute('aria-label', 'Разделы страницы');
+    var track = document.createElement('div'); track.className = 'track';
+    spineFill = document.createElement('div'); spineFill.className = 'fill';
+    sp.appendChild(track); sp.appendChild(spineFill);
+    secs.forEach(function(s, i){
+      var d = document.createElement('button');
+      d.className = 'dot';
+      d.style.top = (secs.length > 1 ? i / (secs.length - 1) * 100 : 0) + '%';
+      var label = (s.querySelector('h1,h2').textContent || '').trim().replace(/\s+/g, ' ');
+      if (label.length > 30) label = label.slice(0, 29).trim() + '…';
+      d.innerHTML = '<span class="tip">' + label + '</span>';
+      d.setAttribute('aria-label', label);
+      d.addEventListener('click', function(){ s.scrollIntoView({behavior:'smooth', block:'start'}); });
+      sp.appendChild(d);
+      spineDots.push(d);
+    });
+    spineSecs = secs;
+    document.body.appendChild(sp);
+  })();
+}
+
 /* ---------- скролл-движок ---------- */
 var scenes = [].slice.call(document.querySelectorAll('[data-scene]'));
 var plxEls = [].slice.call(document.querySelectorAll('[data-parallax]'));
@@ -89,12 +127,29 @@ function update(){
     heroFx.style.opacity = (1 - p * .9).toFixed(3);
     heroFx.style.transform = 'scale(' + (1 - p * .06).toFixed(4) + ') translateY(' + (p * -28).toFixed(1) + 'px)';
   }
+  // хребет: заполнение и активные точки
+  var docH = document.documentElement.scrollHeight - vh;
+  var sp = docH > 0 ? clamp01(scrollY / docH) : 0;
+  if (spineFill){
+    spineFill.style.transform = 'translateX(-50%) scaleY(' + sp.toFixed(4) + ')';
+    var idx = 0;
+    for (var si = 0; si < spineSecs.length; si++){
+      if (spineSecs[si].getBoundingClientRect().top < vh * .55) idx = si;
+    }
+    for (var di = 0; di < spineDots.length; di++){
+      spineDots[di].classList.toggle('on', di <= idx);
+    }
+  }
+  // орбы дрейфуют с разной скоростью
+  for (var bi = 0; bi < orbs.length; bi++){
+    orbs[bi].style.transform = 'translateY(' + (-sp * (160 + bi * 90)).toFixed(1) + 'px)';
+  }
   nav && nav.classList.toggle('scrolled', scrollY > 8);
 }
 function onScroll(){
   if (!ticking){ requestAnimationFrame(update); ticking = true; }
 }
-if (!reduce && (scenes.length || plxEls.length || wordScenes.length || heroFx)){
+if (!reduce && (scenes.length || plxEls.length || wordScenes.length || heroFx || spineFill || orbs.length)){
   addEventListener('scroll', onScroll, {passive:true});
   addEventListener('resize', onScroll, {passive:true});
   update();

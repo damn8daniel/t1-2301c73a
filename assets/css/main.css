@@ -63,8 +63,8 @@ button{font-family:inherit}
   background:rgba(251,251,253,.78);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
   transition:box-shadow .3s}
 .nav.scrolled{box-shadow:0 1px 0 var(--line)}
-.nav-in{max-width:1260px;margin:0 auto;padding:0 24px;height:52px;display:flex;align-items:center;gap:24px}
-.nav-logo img{height:26px;width:auto}
+.nav-in{max-width:1260px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;gap:24px}
+.nav-logo img{height:38px;width:auto}
 .nav-links{display:flex;gap:clamp(14px,1.8vw,26px);font-size:14px;font-weight:500;color:var(--ink-soft);flex:1;justify-content:center;min-width:0}
 .nav-links a{transition:color .15s;padding:4px 0;white-space:nowrap}
 .nav-links a:hover{color:var(--ink)}
@@ -79,7 +79,7 @@ button{font-family:inherit}
 .nav.open .nav-burger span:nth-child(2){opacity:0}
 .nav.open .nav-burger span:nth-child(3){top:20px;transform:rotate(-45deg)}
 @media(max-width:1130px){
-  .nav-links{position:fixed;inset:52px 0 auto 0;background:rgba(251,251,253,.97);backdrop-filter:blur(20px);
+  .nav-links{position:fixed;inset:64px 0 auto 0;background:rgba(251,251,253,.97);backdrop-filter:blur(20px);
     flex-direction:column;gap:0;padding:12px 24px 24px;font-size:19px;font-weight:600;
     transform:translateY(-110%);transition:transform .35s var(--ease);box-shadow:0 30px 60px -20px rgba(0,0,0,.15)}
   .nav-links a{padding:13px 0;border-bottom:1px solid var(--line)}
@@ -89,7 +89,7 @@ button{font-family:inherit}
   .nav-in{justify-content:space-between}
 }
 @media(max-width:560px){.nav .btn{display:none}}
-main{padding-top:52px}
+main{padding-top:64px}
 
 /* ---------- секции ---------- */
 .sec{padding:clamp(80px,10vw,140px) 0}
@@ -100,7 +100,7 @@ main{padding-top:52px}
 .sec-head .t-lead{margin-top:18px}
 
 /* ---------- hero ---------- */
-.hero{min-height:calc(100dvh - 52px);display:flex;flex-direction:column;justify-content:center;text-align:center;position:relative;padding:64px 0}
+.hero{min-height:calc(100dvh - 64px);display:flex;flex-direction:column;justify-content:center;text-align:center;position:relative;padding:64px 0}
 .hero .t-lead{max-width:640px;margin:26px auto 0}
 .hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:38px}
 .hero-vis{margin:clamp(40px,6vw,72px) auto 0;max-width:980px;width:100%;padding:0 24px}
@@ -247,7 +247,7 @@ footer{background:var(--bg-soft);border-top:1px solid var(--line);padding:54px 0
 .f-cols b{color:var(--ink);font-size:14px;display:block;margin-bottom:14px}
 .f-cols a{display:block;padding:5px 0;color:var(--mut)}
 .f-cols a:hover{color:var(--ink)}
-.f-brand img{height:30px;margin-bottom:16px}
+.f-brand img{height:40px;margin-bottom:16px}
 .f-brand p{max-width:300px;line-height:1.55}
 .f-bottom{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:24px}
 .f-tel{font-size:17px;font-weight:700;color:var(--ink)}
@@ -345,3 +345,30 @@ a.tile:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 .cstep .cn::before{content:counter(cs)}
 .cstep h3{font-size:18px;font-weight:700;margin-bottom:7px;letter-spacing:-.015em}
 .cstep p{font-size:14.5px;color:var(--mut)}
+
+
+/* ---------- скролл-хребет: линия с точками по разделам ---------- */
+.spine{position:fixed;left:34px;top:50%;transform:translateY(-50%);height:56vh;z-index:60;display:none}
+@media(min-width:1280px){.spine{display:block}}
+.spine .track,.spine .fill{position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);border-radius:2px}
+.spine .track{background:rgba(110,118,134,.28)}
+.spine .fill{background:linear-gradient(180deg,var(--blue),#5E8EE8);transform-origin:top;transform:translateX(-50%) scaleY(0)}
+.spine .dot{position:absolute;left:50%;width:11px;height:11px;transform:translate(-50%,-50%);border-radius:50%;
+  background:#C2CAD8;border:none;padding:0;cursor:pointer;transition:background .25s,box-shadow .25s}
+.spine .dot:hover{background:var(--blue)}
+.spine .dot.on{background:var(--blue);box-shadow:0 0 0 5px rgba(29,91,214,.18)}
+.spine .dot .tip{position:absolute;left:22px;top:50%;transform:translateY(-50%) translateX(-6px);white-space:nowrap;
+  font-size:12.5px;font-weight:600;color:#fff;background:var(--ink);border-radius:8px;padding:5px 11px;
+  opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.spine .dot:hover .tip{opacity:1;transform:translateY(-50%) translateX(0)}
+.spine .dot:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+
+/* ---------- фоновые орбы по бокам ---------- */
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:5;filter:blur(70px);opacity:.5;will-change:transform;display:none}
+@media(min-width:1180px){.orb{display:block}}
+.orb-1{width:420px;height:420px;left:-300px;top:10%;background:radial-gradient(circle,rgba(29,91,214,.34),transparent 70%)}
+.orb-2{width:380px;height:380px;right:-280px;top:34%;background:radial-gradient(circle,rgba(94,142,232,.32),transparent 70%)}
+.orb-3{width:340px;height:340px;left:-260px;top:70%;background:radial-gradient(circle,rgba(29,91,214,.26),transparent 70%)}
+.orb-4{width:300px;height:300px;right:-240px;top:88%;background:radial-gradient(circle,rgba(94,142,232,.24),transparent 70%)}
+
+@media(prefers-reduced-motion:reduce){.spine,.orb{display:none !important}}
