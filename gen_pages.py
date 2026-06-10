@@ -235,15 +235,21 @@ INDEX = '''
     <svg viewBox="0 0 100 100"><defs><path id="c" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0"/></defs>
     <text><textPath href="#c">реестр мчс россии · бессрочно · вся рф · реестр мчс россии · бессрочно ·</textPath></text></svg>
   </div>
-  <div class="w in">
-    <div class="doc-no"><span>Лицензируемая деятельность: <b>ПП РФ № 1128</b></span><span>Статус: <b>оформляем под ключ</b></span></div>
-    <h1>Пожарная лицензия МЧС, <em>оформленная за вас</em></h1>
-    <p class="sub">Специалисты, поверенное оборудование, документы и выездная проверка: всё берём на себя. <b>От 35 000 ₽, готово за 15-25 рабочих дней</b>, гарантия результата в договоре.</p>
-    <div class="cta">
-      <a class="btn" href="licenziya-mchs.html">Получить лицензию</a>
-      <a class="btn deep" href="tseny.html">Цены и тарифы</a>
+  <div class="w in"><div class="grid">
+    <div>
+      <div class="doc-no"><span>Лицензируемая деятельность: <b>ПП РФ № 1128</b></span><span>Статус: <b>оформляем под ключ</b></span></div>
+      <h1>Пожарная лицензия МЧС, <em>оформленная за вас</em></h1>
+      <p class="sub">Специалисты, поверенное оборудование, документы и выездная проверка: всё берём на себя. <b>От 35 000 ₽, готово за 15-25 рабочих дней</b>, гарантия результата в договоре.</p>
+      <div class="cta">
+        <a class="btn" href="licenziya-mchs.html">Получить лицензию</a>
+        <a class="btn deep" href="tseny.html">Цены и тарифы</a>
+      </div>
     </div>
-  </div>
+    <div class="doc" aria-hidden="true">
+      <div class="paper"><img src="assets/real/lic.png" width="320" height="397" alt="" fetchpriority="high"></div>
+      <div class="chip"><b>98%</b><span>проходят проверку<br>с первого раза</span></div>
+    </div>
+  </div></div>
 </section>
 <div data-mbar-after></div>
 
@@ -273,6 +279,16 @@ INDEX = '''
     <a class="cell" href="uslugi.html#licenzii"><span class="k">Лицензии</span><h3>Минкульт, уведомления, подтверждение</h3><p>Лицензия Минкульта, подача уведомлений МЧС, периодическое подтверждение требований.</p></a>
     <a class="cell" href="uslugi.html#oborudovanie"><span class="k">Оборудование</span><h3>Аренда и продажа приборов</h3><p>Поверенные комплекты для лицензии МЧС, регистрация электролаборатории.</p></a>
     <a class="cell" href="uslugi.html"><span class="k">Каталог</span><h3>Все услуги списком</h3><p>Полный перечень из 20+ услуг компании на одной странице.</p></a>
+  </div>
+</div></section>
+
+<section class="blk" style="padding-top:0"><div class="w">
+  <div class="photoband fx">
+    <img loading="lazy" src="assets/real/office.webp" width="1024" height="683" alt="Команда компании Сенсор Лицензирование в офисе">
+    <div class="cap">
+      <div><b>Команда «Сенсор», Москва</b><span>лицензирование МЧС: основная практика, а не услуга в каталоге</span></div>
+      <span>с 2016 года · 6 филиалов · свой учебный центр</span>
+    </div>
   </div>
 </div></section>
 
@@ -306,7 +322,7 @@ INDEX = '''
 </div></section>
 
 <section class="blk" style="padding-top:0"><div class="w team">
-  <div class="ph fx"><img loading="lazy" src="assets/real/office.webp" width="1024" height="683" alt="Команда компании Сенсор Лицензирование"></div>
+  <div class="ph fx"><img loading="lazy" src="assets/real/license-sample.webp" width="1024" height="364" alt="Лицензия МЧС, оформленная для клиента компании Сенсор" style="aspect-ratio:auto"></div>
   <div class="fx">
     <h2 class="t">Кто ведёт ваше дело</h2>
     <ul>
@@ -646,6 +662,9 @@ KONTAKTY = phero('Контакты',
       <p style="margin-top:8px">ООО «НТЦ СпецПожСтандарт» · ИНН 7751144295</p></div>
   </div>
 ''' + BLANK.format(h2='Заполните бланк, <em>остальное оформим мы</em>') + '''
+  <div class="map fx" style="margin-top:40px">
+    <iframe src="https://yandex.ru/map-widget/v1/?text=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0%2C%20%D0%9A%D0%B8%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B5%20%D1%88%D0%BE%D1%81%D1%81%D0%B5%2022%20%D0%BA%D0%BC%20%D0%91%D0%9F%20%D0%A0%D1%83%D0%BC%D1%8F%D0%BD%D1%86%D0%B5%D0%B2%D0%BE&z=14" title="Офис Сенсор Лицензирование на карте" loading="lazy"></iframe>
+  </div>
 </div></section>
 '''
 

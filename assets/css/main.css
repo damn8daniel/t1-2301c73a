@@ -310,3 +310,26 @@ a.li-row h3{color:var(--cobalt)}
 a.cell{display:block}
 a.cell:focus-visible,a.li-row:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px}
 .cells .cell h3 a{color:inherit}
+
+
+/* hero с документом справа */
+.hero .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,4vw,64px);align-items:center}
+@media(max-width:940px){.hero .grid{grid-template-columns:1fr}.hero .doc{display:none}}
+.hero .doc{position:relative;justify-self:center}
+.hero .doc .paper{background:#fff;border-radius:14px;padding:14px;box-shadow:0 36px 80px -36px oklch(0.2 0.08 259 / .75);transform:rotate(-2.5deg);transition:transform .5s var(--ease)}
+.hero .doc:hover .paper{transform:rotate(-1deg) translateY(-6px)}
+.hero .doc img{width:min(420px,38vw);border-radius:8px}
+.hero .doc .chip{position:absolute;right:-18px;bottom:26px;background:#fff;color:var(--ink);border-radius:12px;padding:13px 18px;box-shadow:0 18px 44px -20px oklch(0.2 0.08 259 / .7);transform:rotate(1.5deg)}
+.hero .doc .chip b{font-family:'Bitter';font-size:22px;color:var(--cobalt);display:block;line-height:1.1}
+.hero .doc .chip span{font-size:12.5px;color:var(--mut)}
+
+/* широкая фото-полоса */
+.photoband{position:relative;border-radius:20px;overflow:hidden;box-shadow:0 30px 70px -42px oklch(0.4 0.1 259 / .6)}
+.photoband img{width:100%;max-height:440px;object-fit:cover}
+.photoband .cap{position:absolute;left:0;right:0;bottom:0;padding:70px 28px 22px;background:linear-gradient(180deg,transparent,oklch(0.25 0.09 259 / .88));color:#fff;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:end}
+.photoband .cap b{font-family:'Bitter';font-size:18px;display:block}
+.photoband .cap span{font-size:14px;color:oklch(0.88 0.04 259)}
+
+/* карта */
+.map{border:1px solid var(--bd);border-radius:16px;overflow:hidden;box-shadow:0 24px 56px -36px oklch(0.4 0.1 259 / .5)}
+.map iframe{display:block;width:100%;height:380px;border:0}
