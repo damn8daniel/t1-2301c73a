@@ -246,7 +246,7 @@ INDEX = '''
       </div>
     </div>
     <div class="doc" aria-hidden="true">
-      <div class="paper"><img src="assets/real/lic.png" width="320" height="397" alt="" fetchpriority="high"></div>
+      <div class="paper"><img src="assets/real/license-sample.webp" width="1024" height="364" alt="" fetchpriority="high"></div>
       <div class="chip"><b>98%</b><span>проходят проверку<br>с первого раза</span></div>
     </div>
   </div></div>
@@ -284,7 +284,7 @@ INDEX = '''
 
 <section class="blk" style="padding-top:0"><div class="w">
   <div class="photoband fx">
-    <img loading="lazy" src="assets/real/office.webp" width="1024" height="683" alt="Команда компании Сенсор Лицензирование в офисе">
+    <img loading="lazy" src="assets/real/team2.webp" width="1024" height="683" alt="Команда компании Сенсор Лицензирование">
     <div class="cap">
       <div><b>Команда «Сенсор», Москва</b><span>лицензирование МЧС: основная практика, а не услуга в каталоге</span></div>
       <span>с 2016 года · 6 филиалов · свой учебный центр</span>
@@ -322,7 +322,7 @@ INDEX = '''
 </div></section>
 
 <section class="blk" style="padding-top:0"><div class="w team">
-  <div class="ph fx"><img loading="lazy" src="assets/real/license-sample.webp" width="1024" height="364" alt="Лицензия МЧС, оформленная для клиента компании Сенсор" style="aspect-ratio:auto"></div>
+  <div class="ph fx"><img loading="lazy" src="assets/real/office.webp" width="1024" height="683" alt="Команда Сенсор Лицензирование в офисе"></div>
   <div class="fx">
     <h2 class="t">Кто ведёт ваше дело</h2>
     <ul>
@@ -611,7 +611,7 @@ OKOMP = phero('О компании',
 </div>
 
 <section class="blk"><div class="w team">
-  <div class="ph fx"><img src="assets/real/office.webp" width="1024" height="683" alt="Команда компании Сенсор Лицензирование" fetchpriority="high"></div>
+  <div class="ph fx"><img src="assets/real/team2.webp" width="1024" height="683" alt="Команда компании Сенсор Лицензирование" fetchpriority="high"></div>
   <div class="fx">
     <h2 class="t">Почему с нами спокойно</h2>
     <ul>
