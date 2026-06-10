@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Генератор всех страниц сайта. v8 «NYC»: один источник правды для шапки/футера/модалки."""
+"""Генератор всех страниц. v9 «Кобальтовый документ» (развитие варианта impeccable)."""
 import io, json
 
 SITE = 'https://damn8daniel.github.io/t1-2301c73a/'
-V = 'v=8'
+V = 'v=9'
 
 HEAD = '''<!doctype html>
 <html lang="ru">
@@ -26,17 +26,15 @@ HEAD = '''<!doctype html>
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preload" href="assets/fonts/it-cyrillic-400_900.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/it-latin-400_900.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/jbm-cyrillic-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/bitter-cyrillic-normal-400_800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/sofia-cyrillic-normal-400_700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/main.css?''' + V + '''">
 {extra_head}</head>
 <body>
 
-<div class="progress" aria-hidden="true"><i id="pbar"></i></div>
-<nav class="nav"><div class="nav-in">
-  <a class="nav-logo" href="index.html"><img src="assets/real/logo.png" alt="Сенсор Лицензирование" width="125" height="45"></a>
-  <div class="nav-links">
+<header class="nav"><div class="nav-in">
+  <a class="brand" href="index.html">Сенсор <span>Лицензирование</span></a>
+  <nav class="nav-links">
     <a {a1} href="licenziya-mchs.html">Лицензия МЧС</a>
     <a {a2} href="vidy-rabot.html">Виды работ</a>
     <a {a3} href="tseny.html">Цены</a>
@@ -44,13 +42,13 @@ HEAD = '''<!doctype html>
     <a {a5} href="o-kompanii.html">О компании</a>
     <a {a6} href="kontakty.html">Контакты</a>
     <a class="mtel" href="tel:+78002220986">8 800 222-09-86</a>
-  </div>
+  </nav>
   <div class="nav-right">
     <a class="nav-tel" href="tel:+78002220986">8 800 222-09-86</a>
-    <a class="btn" href="kontakty.html#zayavka">Заявка</a>
+    <a class="hbtn" href="kontakty.html#zayavka">Заявка</a>
     <button class="nav-burger" aria-label="Меню"><span></span><span></span><span></span></button>
   </div>
-</div></nav>
+</div></header>
 
 <main>
 '''
@@ -59,7 +57,6 @@ FOOT = '''
 </main>
 
 <footer>
-  <div class="w"><div class="f-big">Сенсор<span>.</span></div></div>
   <div class="w f-cols">
     <div class="f-brand">
       <b>Сенсор Лицензирование</b>
@@ -88,8 +85,8 @@ FOOT = '''
 </footer>
 
 <div class="mbar" id="mbar">
-  <a class="btn line" href="tel:+78002220986">Позвонить</a>
-  <a class="btn" href="kontakty.html#zayavka">Заявка</a>
+  <a class="btn line" href="tel:+78002220986" style="background:#fff">Позвонить</a>
+  <a class="btn fill" href="kontakty.html#zayavka">Заявка</a>
 </div>
 
 <dialog class="modal" id="leadModal">
@@ -99,12 +96,12 @@ FOOT = '''
     <p>Перезвоним в течение 15 минут в рабочее время, рассчитаем стоимость и срок.</p>
     <div class="fld"><label for="m-name">Ваше имя</label><input id="m-name" name="name" placeholder="Иван" required autocomplete="name"></div>
     <div class="fld"><label for="m-phone">Телефон</label><input id="m-phone" name="phone" type="tel" placeholder="+7 ___ ___-__-__" required autocomplete="tel"></div>
-    <button class="btn" type="submit">Отправить</button>
+    <button class="btn" type="submit">Отправить заявку</button>
     <div class="fine">Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных</div>
   </form>
 </dialog>
 
-<div class="toast" id="toast">Заявка принята. Перезвоним в течение 15 минут</div>
+<div class="toast" id="toast">Заявка принята: перезвоним в течение 15 минут</div>
 
 <script src="assets/js/main.js?''' + V + '''" defer></script>
 </body>
@@ -122,19 +119,56 @@ def page(fname, nav_idx, title, desc, body, crumb=None, extra_head=''):
     if nav_idx is not None:
         acts[nav_idx] = 'class="act"'
     extra = (breadcrumb_ld(crumb, fname) if crumb else '') + extra_head
-    crumb_html = f'<div class="w crumbs"><a href="index.html">Главная</a><span>›</span>{crumb}</div>\n' if crumb else ''
-    html = HEAD.format(title=title, desc=desc, extra_head=extra, url=SITE+(fname if fname!='index.html' else ''), site=SITE,
-                       a1=acts[0], a2=acts[1], a3=acts[2], a4=acts[3], a5=acts[4], a6=acts[5]) + crumb_html + body + FOOT
+    html = HEAD.format(title=title, desc=desc, extra_head=extra,
+                       url=SITE+(fname if fname!='index.html' else ''), site=SITE,
+                       a1=acts[0], a2=acts[1], a3=acts[2], a4=acts[3], a5=acts[4], a6=acts[5]) + body + FOOT
     with io.open(fname, 'w', encoding='utf-8') as f:
         f.write(html)
     print('written', fname)
 
+def phero(crumb, h1, sub):
+    return f'''<section class="phero"><div class="w in">
+  <div class="crumbs"><a href="index.html">Главная</a><span>›</span>{crumb}</div>
+  <h1>{h1}</h1>
+  <p class="sub">{sub}</p>
+</div></section>
+<div data-mbar-after></div>'''
+
 LETTERS = '\n'.join(
-    f'    <a class="hcard-img" href="assets/real/pismo_{i}.webp" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_{i}.webp" width="815" height="1127" alt="Благодарственное письмо клиента, скан {i}"></a>'
+    f'    <a href="assets/real/pismo_{i}.webp" target="_blank" rel="noopener"><img loading="lazy" src="assets/real/pismo_{i}.webp" width="815" height="1127" alt="Благодарственное письмо клиента, скан {i}"></a>'
     for i in range(1, 7))
 
+LEDGER = '''
+  <div class="ledger mt fx">
+    <div class="li-row"><span class="no">I</span><h3>Системы пожаротушения</h3><p>Водяное, пенное, газовое, порошковое и аэрозольное. Монтаж, ТО, ремонт.</p></div>
+    <div class="li-row"><span class="no">II</span><h3>Пожарная сигнализация</h3><p>АПС и ОПС, диспетчеризация, пусконаладка.</p></div>
+    <div class="li-row"><span class="no">III</span><h3>Противопожарный водопровод</h3><p>Внутренний и наружный, гидранты, насосные станции.</p></div>
+    <div class="li-row"><span class="no">IV</span><h3>Противодымная вентиляция</h3><p>Дымоудаление и подпор воздуха, клапаны, вентиляторы.</p></div>
+    <div class="li-row"><span class="no">V</span><h3>Оповещение и эвакуация</h3><p>СОУЭ всех пяти типов.</p></div>
+    <div class="li-row"><span class="no">VI</span><h3>Противопожарные преграды</h3><p>Двери, ворота, люки, окна, шторы.</p></div>
+    <div class="li-row"><span class="no">VII</span><h3>Огнезащита</h3><p>Конструкции, кабели, воздуховоды, ткани.</p></div>
+    <div class="li-row"><span class="no">VIII</span><h3>Первичные средства</h3><p>Огнетушители, краны, рукава: установка и перезарядка.</p></div>
+    <div class="li-row"><span class="no">IX</span><h3>Тушение пожаров</h3><p>Населённые пункты и производственные объекты.</p></div>
+  </div>'''
+
+TIERS = '''
+    <div class="tiers">
+      <div class="tier"><h3>Документы</h3><div class="pr">35 000 ₽</div><div class="tm">10 рабочих дней</div>
+        <ul><li>Пакет документов</li><li>Проверка по требованиям</li><li>Консультация эксперта</li></ul>
+        <a class="btn" href="{cta}">Выбрать пакет</a></div>
+      <div class="tier star"><div class="tg">Выбирают чаще всего</div><h3>Под ключ</h3><div class="pr">от 80 000 ₽</div><div class="tm">15-25 рабочих дней</div>
+        <ul><li>Сопровождение до реестра</li><li>Подбор специалистов</li><li>Аренда оборудования</li><li>Выездная проверка с нами</li><li>Гарантия в договоре</li></ul>
+        <a class="btn" href="{cta}">Выбрать пакет</a></div>
+      <div class="tier"><h3>Срочно</h3><div class="pr">от 130 000 ₽</div><div class="tm">от 10 рабочих дней</div>
+        <ul><li>Всё из «Под ключ»</li><li>Приоритетная подача</li><li>Ускоренная проверка</li></ul>
+        <a class="btn" href="{cta}">Выбрать пакет</a></div>
+      <div class="tier"><h3>Готовая фирма</h3><div class="pr">от 299 000 ₽</div><div class="tm">1-3 дня</div>
+        <ul><li>ООО с действующей лицензией</li><li>Чистая история</li><li>Переоформление на вас</li></ul>
+        <a class="btn" href="{cta}">Выбрать пакет</a></div>
+    </div>'''
+
 CALC = '''
-    <div class="calc fx-scale">
+    <div class="calc mt fx">
       <div class="calc-q">
         <div class="cq"><div class="ql">1. Сколько видов работ нужно?</div><div class="opts" data-g="vid">
           <span class="opt on" data-v="0">1-2 вида</span><span class="opt" data-v="20000">3-5 видов</span><span class="opt" data-v="45000">6 и больше</span></div></div>
@@ -149,174 +183,130 @@ CALC = '''
         <div class="rl">Ориентир под ключ</div>
         <div class="rv" id="calcNum" aria-live="polite">от 35 000 ₽</div>
         <div class="rs" id="calcTerm">срок 15-25 рабочих дней, плюс госпошлина 7 500 ₽</div>
-        <a class="btn inv" href="{cta}">Получить точный расчёт</a>
+        <a class="btn" href="{cta}">Получить точный расчёт</a>
         <div class="note">Рассрочка 0% · оплата по этапам · без предоплаты</div>
       </div>
     </div>'''
 
-PLANS = '''
-    <div class="plans">
-      <div class="plan fx"><h3>Документы</h3><div class="price">35 000 ₽</div><div class="term">10 рабочих дней</div>
-        <ul><li>Подготовка пакета документов</li><li>Проверка на соответствие требованиям</li><li>Консультация эксперта</li></ul>
-        <a class="btn line" href="kontakty.html#zayavka">Выбрать</a></div>
-      <div class="plan best fx"><div class="tag">Выбирают чаще всего</div><h3>Под ключ</h3><div class="price">от 80 000 ₽</div><div class="term">15-25 рабочих дней</div>
-        <ul><li>Полное сопровождение до реестра</li><li>Подбор специалистов</li><li>Аренда поверенного оборудования</li><li>Сопровождение выездной проверки</li><li>Гарантия результата в договоре</li></ul>
-        <a class="btn" style="background:#fff;color:#0A0A0B;border-color:#fff" href="kontakty.html#zayavka">Выбрать</a></div>
-      <div class="plan fx fx-d1"><h3>Срочно</h3><div class="price">от 130 000 ₽</div><div class="term">от 10 рабочих дней</div>
-        <ul><li>Всё из тарифа «Под ключ»</li><li>Приоритетная подача</li><li>Ускоренное прохождение проверки</li></ul>
-        <a class="btn line" href="kontakty.html#zayavka">Выбрать</a></div>
-      <div class="plan fx fx-d2"><h3>Готовая фирма</h3><div class="price">от 299 000 ₽</div><div class="term">1-3 дня</div>
-        <ul><li>ООО с действующей лицензией МЧС</li><li>Переоформление на вас</li><li>Чистая история компании</li></ul>
-        <a class="btn line" href="kontakty.html#zayavka">Выбрать</a></div>
-    </div>'''
+TIMELINE = '''
+  <div class="timeline fx">
+    <div class="tstep"><h3>Аудит и договор <span>1-2 дня</span></h3><p>Разбираем вашу ситуацию, подбираем виды работ, фиксируем цену, срок и гарантию результата.</p></div>
+    <div class="tstep"><h3>Специалисты и оборудование <span>3-7 дней</span></h3><p>Персонал с профильным образованием и стажем, поверенные приборы по Приказу № 571 в аренду.</p></div>
+    <div class="tstep"><h3>Пакет документов <span>2-4 дня</span></h3><p>Готовим полный комплект и перепроверяем перед подачей: ошибки исключены.</p></div>
+    <div class="tstep"><h3>Подача и выездная проверка <span>до 15 рабочих дней</span></h3><p>Подаём через Госуслуги, готовим объект и сопровождаем оценку МЧС.</p></div>
+    <div class="tstep"><h3>Запись в реестре <span>итог</span></h3><p>Компания в реестре МЧС России: можно работать и участвовать в тендерах. Лицензия бессрочная.</p></div>
+  </div>'''
 
-FAQ8 = '''
-    <div class="faq">
-      <div class="fi"><button class="fq">Кому обязательно нужна лицензия МЧС?</button><div class="fa"><div><p>Всем организациям и ИП, которые выполняют монтаж, ТО и ремонт средств обеспечения пожарной безопасности, огнезащиту или тушение пожаров. В том числе для участия в тендерах по 44-ФЗ и 223-ФЗ и обслуживания собственных систем на объектах.</p></div></div></div>
-      <div class="fi"><button class="fq">Сколько стоит лицензия МЧС в 2026 году?</button><div class="fa"><div><p>Госпошлина: 7 500 ₽. Сопровождение под ключ: от 35 000 ₽ за подготовку документов до 80 000-130 000 ₽ за полный пакет с подбором специалистов и оборудования. Точную цену рассчитаем по вашим видам работ.</p></div></div></div>
-      <div class="fi"><button class="fq">За сколько дней оформляется лицензия?</button><div class="fa"><div><p>Заявление рассматривается до 15 рабочих дней. Полный цикл с подготовкой и проверкой занимает 15-25 рабочих дней, в срочном режиме от 10 дней.</p></div></div></div>
-      <div class="fi"><button class="fq">Нужно ли своё оборудование и специалисты?</button><div class="fa"><div><p>Да. Требуются штатные специалисты с профильным образованием и поверенное оборудование по Приказу МЧС № 571. Мы помогаем с подбором персонала и предоставляем оборудование в аренду, покупать его не обязательно.</p></div></div></div>
-      <div class="fi"><button class="fq">Лицензия бессрочная? Нужно ли продлевать?</button><div class="fa"><div><p>Да, лицензия бессрочная и действует по всей России. Продление не требуется, но раз в 3 года проводится периодическое подтверждение соответствия. Сопровождаем и эту процедуру.</p></div></div></div>
-      <div class="fi"><button class="fq">Чем грозит работа без лицензии?</button><div class="fa"><div><p>Штрафы для юрлиц до 250 000 ₽, приостановка деятельности до 90 суток, отстранение от тендеров. При причинении ущерба возможна уголовная ответственность.</p></div></div></div>
-      <div class="fi"><button class="fq">Можно ли купить готовую фирму с лицензией?</button><div class="fa"><div><p>Да. Доступны готовые ООО с действующей лицензией МЧС и чистой историей. Переоформление на вас занимает 1-3 дня.</p></div></div></div>
-      <div class="fi"><button class="fq">Как проверить лицензию в реестре?</button><div class="fa"><div><p>По ИНН организации в открытом реестре лицензий на сайте МЧС России. Подробная инструкция на странице проверки лицензии.</p></div></div></div>
-    </div>'''
+FAQ_MAIN = '''
+  <div class="qa mt fx">
+    <details><summary>Кому обязательно нужна лицензия МЧС?</summary><p class="ans">Организациям и ИП, которые выполняют монтаж, ТО и ремонт средств обеспечения пожарной безопасности, огнезащиту или тушение пожаров. В том числе для участия в тендерах по 44-ФЗ и 223-ФЗ.</p></details>
+    <details><summary>Сколько это стоит в 2026 году?</summary><p class="ans">Госпошлина 7 500 ₽. Сопровождение: от 35 000 ₽ за подготовку документов до 80 000-130 000 ₽ за полный пакет со специалистами и оборудованием.</p></details>
+    <details><summary>Нужны ли свои специалисты и приборы?</summary><p class="ans">Да, это лицензионные требования. Помогаем с подбором персонала и сдаём поверенное оборудование в аренду: покупать не обязательно.</p></details>
+    <details><summary>Лицензия бессрочная?</summary><p class="ans">Да, действует бессрочно и по всей России. Раз в 3 года проходит периодическое подтверждение соответствия: сопровождаем и его.</p></details>
+    <details><summary>Что будет, если лицензию не выдадут?</summary><p class="ans">Гарантия результата зафиксирована в договоре: при отказе по нашей вине вернём оплату полностью. На практике 98% клиентов проходят проверку с первого раза.</p></details>
+    <details><summary>Чем грозит работа без лицензии?</summary><p class="ans">Штраф до 250 000 ₽ для юрлиц и приостановка деятельности до 90 суток по КоАП РФ, отстранение от тендеров.</p></details>
+  </div>'''
+
+BLANK = '''
+  <div class="blank fx" id="zayavka">
+    <div>
+      <h2 class="t">{h2}</h2>
+      <p class="note">Перезвоним в течение 15 минут в рабочее время: разберём вашу ситуацию и назовём точную цену и срок.</p>
+    </div>
+    <form class="form" onsubmit="return submitForm(event)">
+      <div class="fld"><label for="f-name">Ваше имя</label><input id="f-name" name="name" placeholder="Иван" required autocomplete="name"></div>
+      <div class="fld"><label for="f-phone">Телефон</label><input id="f-phone" name="phone" type="tel" placeholder="+7 ___ ___-__-__" required autocomplete="tel"></div>
+      <button class="btn" type="submit">Отправить заявку</button>
+      <div class="fine">Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных</div>
+    </form>
+  </div>'''
 
 # ============================================================ ГЛАВНАЯ
 INDEX = '''
 <section class="hero">
-  <div class="w">
-    <div class="meta">
-      <span class="mono dim">Сенсор Лицензирование</span>
-      <span class="mono dim">Москва · вся Россия · с 2016</span>
-    </div>
-    <h1 class="d1" data-hero-fx>Лицензия МЧС<br><span class="acc">под ключ</span></h1>
-    <div class="sub-row">
-      <p class="lead">Оформляем пожарные лицензии: от аудита до записи в реестре за 15-25 рабочих дней. Гарантия результата зафиксирована в договоре.</p>
-      <div class="cta-row">
-        <a class="btn" href="licenziya-mchs.html">Получить лицензию</a>
-        <a class="btn line" href="tseny.html">Цены</a>
-      </div>
+  <div class="seal" aria-hidden="true">
+    <svg viewBox="0 0 100 100"><defs><path id="c" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0"/></defs>
+    <text><textPath href="#c">реестр мчс россии · бессрочно · вся рф · реестр мчс россии · бессрочно ·</textPath></text></svg>
+  </div>
+  <div class="w in">
+    <div class="doc-no"><span>Лицензируемая деятельность: <b>ПП РФ № 1128</b></span><span>Статус: <b>оформляем под ключ</b></span></div>
+    <h1>Пожарная лицензия МЧС, <em>оформленная за вас</em></h1>
+    <p class="sub">Специалисты, поверенное оборудование, документы и выездная проверка: всё берём на себя. <b>От 35 000 ₽, готово за 15-25 рабочих дней</b>, гарантия результата в договоре.</p>
+    <div class="cta">
+      <a class="btn" href="licenziya-mchs.html">Получить лицензию</a>
+      <a class="btn deep" href="tseny.html">Цены и тарифы</a>
     </div>
   </div>
-  <div class="hero-img"><img src="assets/real/license-sample.webp" width="1024" height="364" alt="Лицензия МЧС, оформленная для клиента" data-parallax="20" fetchpriority="high"></div>
 </section>
 <div data-mbar-after></div>
 
-<div class="ticker" aria-hidden="true"><div class="tr">
-  <span>Лицензия МЧС</span><span class="acc">/</span><span>Под ключ</span><span class="acc">/</span><span>С 2016 года</span><span class="acc">/</span><span>1600+ лицензий</span><span class="acc">/</span><span>По всей России</span><span class="acc">/</span>
-</div></div>
-
-<section class="blk">
-  <div class="w stats">
-    <div class="stat fx"><div class="v" data-cnt="1600" data-suf="+">0</div><div class="l mono dim">лицензий МЧС оформлено</div></div>
-    <div class="stat fx fx-d1"><div class="v"><span data-cnt="9">0</span> <i>лет</i></div><div class="l mono dim">на рынке, с 2016 года</div></div>
-    <div class="stat fx fx-d2"><div class="v" data-cnt="98" data-suf="%">0</div><div class="l mono dim">проходят проверку с первого раза</div></div>
-    <div class="stat fx fx-d3"><div class="v">4.9 <i>★</i></div><div class="l mono dim">Яндекс Карты и 2ГИС</div></div>
+<div class="facts w">
+  <div class="row fx">
+    <div class="fact"><div class="v" data-cnt="1600">0</div><div class="l">лицензий оформлено с 2016 года</div></div>
+    <div class="fact"><div class="v"><span data-cnt="98">0</span><i>%</i></div><div class="l">проходят проверку с первого раза</div></div>
+    <div class="fact"><div class="v">15-25</div><div class="l">рабочих дней до записи в реестре</div></div>
+    <div class="fact"><div class="v">4.9 <i>★</i></div><div class="l">по 450+ отзывам на картах</div></div>
   </div>
-</section>
+</div>
 
-<section class="blk-ink wordscene" style="height:180vh">
-  <div class="pin"><div class="w">
-    <p class="words">
-      <span>Работа</span> <span>без</span> <span>лицензии</span> <span>МЧС</span> <span>грозит</span>
-      <span class="accent">штрафом</span> <span class="accent">до</span> <span class="accent">250 000 ₽</span>
-      <span>и</span> <span>остановкой</span> <span>деятельности</span> <span>на</span> <span>90</span> <span>суток.</span>
-      <span>Мы</span> <span>доводим</span> <span>до</span> <span>записи</span> <span>в</span> <span>реестре</span>
-      <span class="accent">за</span> <span class="accent">15-25</span> <span class="accent">дней.</span>
-    </p>
-  </div></div>
-</section>
+<section class="blk"><div class="w">
+  <h2 class="t">Опись видов работ</h2>
+  <p class="t-sub">Девять видов деятельности по Постановлению № 1128. Лицензия оформляется на любой набор: лишние виды удорожают, недостающие блокируют контракты.</p>
+''' + LEDGER + '''
+  <p class="mt" style="margin-top:28px"><a class="tlink" href="vidy-rabot.html">Подробное описание каждого вида</a></p>
+</div></section>
 
-<section class="blk">
-  <div class="w">
-    <div class="head-row"><h2 class="d2">Чем мы занимаемся</h2><span class="idx">5 направлений</span></div>
-    <div class="svc-list">
-      <a class="svc" href="licenziya-mchs.html">
-        <span class="num">/01</span><h3>Лицензия МЧС под ключ</h3>
-        <p>Монтаж, обслуживание и ремонт средств пожарной безопасности, огнезащита, тушение. От 35 000 ₽, 15-25 рабочих дней.</p>
-        <span class="arr">→</span>
-      </a>
-      <a class="svc" href="licenziya-mchs.html#pereoformlenie">
-        <span class="num">/02</span><h3>Переоформление</h3>
-        <p>Добавление видов работ, смена адреса или реквизитов, периодическое подтверждение раз в 3 года.</p>
-        <span class="arr">→</span>
-      </a>
-      <a class="svc" href="tseny.html">
-        <span class="num">/03</span><h3>Готовая фирма</h3>
-        <p>ООО с действующей лицензией МЧС и чистой историей. Переоформление на вас за 1-3 дня.</p>
-        <span class="arr">→</span>
-      </a>
-      <a class="svc" href="o-kompanii.html#centr">
-        <span class="num">/04</span><h3>Обучение специалистов</h3>
-        <p>Собственный учебный центр: повышение квалификации и аттестация под лицензионные требования.</p>
-        <span class="arr">→</span>
-      </a>
-      <a class="svc" href="proverka.html">
-        <span class="num">/05</span><h3>Проверка лицензии</h3>
-        <p>Проверим ваш статус или статус подрядчика по ИНН в реестре МЧС России. Бесплатно.</p>
-        <span class="arr">→</span>
-      </a>
-    </div>
+<section class="blk" style="padding-top:0"><div class="w spread">
+  <div class="stick fx">
+    <h2 class="t">Как документ становится <em>записью в реестре</em></h2>
+    <p class="t-sub">Оплата привязана к этапам. Предоплаты нет, рассрочка 0%.</p>
+    <p style="margin-top:24px"><a class="btn fill" href="licenziya-mchs.html">Подробнее об услуге</a></p>
   </div>
-</section>
+''' + TIMELINE + '''
+</div></section>
 
-<section class="blk blk-paper blk-rule">
-  <div class="w">
-    <div class="head-row"><h2 class="d2">Три шага до лицензии</h2><span class="idx">15-25 дней</span></div>
-    <div>
-      <div class="step-row fx"><div class="num">01</div><div><h3>Аудит и договор</h3><p>Разбираем вашу ситуацию, подбираем виды работ, фиксируем цену, срок и гарантию результата.</p></div><span class="dur">1-2 дня</span></div>
-      <div class="step-row fx"><div class="num">02</div><div><h3>Специалисты, оборудование, документы</h3><p>Закрываем лицензионные требования: персонал со стажем, поверенные приборы в аренду, полный пакет документов.</p></div><span class="dur">5-10 дней</span></div>
-      <div class="step-row fx"><div class="num">03</div><div><h3>Подача и запись в реестре</h3><p>Подаём через Госуслуги, сопровождаем выездную проверку МЧС. Итог: ваша компания в реестре.</p></div><span class="dur">до 15 раб. дней</span></div>
-    </div>
-    <div style="margin-top:40px" class="fx"><a class="tlink" href="licenziya-mchs.html#etapy">Все шесть этапов подробно</a></div>
+<section class="blk" style="padding-top:0"><div class="w">
+  <div class="shelf fx">
+    <h2 class="t">Стоимость</h2>
+    <p class="t-sub">Цена зависит от набора видов работ и того, что уже есть у вас: люди, приборы, документы.</p>
+''' + TIERS.format(cta='kontakty.html#zayavka') + '''
+    <p class="fee">Госпошлина отдельно: 7 500 ₽ за выдачу, 3 500 ₽ за переоформление. <a href="tseny.html" style="color:#fff;text-decoration:underline">Подробнее о ценах</a></p>
   </div>
-</section>
+</div></section>
 
-<section class="blk blk-rule" style="padding-bottom:0">
-  <div class="w">
-    <div class="head-row"><h2 class="d2">Нам пишут благодарности</h2><span class="idx">4.9 ★ · 450+ отзывов</span></div>
-    <p class="head-sub lead">Средняя оценка на Яндекс Картах, 2ГИС и Google. Ниже реальные письма клиентов: нажмите, чтобы открыть скан.</p>
-  </div>
-  <div class="hscroll">
+<section class="blk" style="padding-top:0"><div class="w">
+  <h2 class="t">Благодарственные письма</h2>
+  <div class="desk mt fx">
 ''' + LETTERS + '''
   </div>
-</section>
-
-<section class="blk" style="padding-bottom:0">
-  <div class="w">
-    <div class="head-row"><h2 class="d2">Команда в теме с 2016 года</h2></div>
-    <p class="head-sub lead">Лицензирование МЧС наш основной профиль, а не одна из ста услуг.</p>
+  <div class="praise fx">
+    <div class="score">4.9 <i>★</i></div>
+    <p>Средняя оценка по 450+ отзывам на Яндекс Картах, 2ГИС и Google. Сканы открываются по клику.</p>
   </div>
-  <div class="img-full zoom-img fx-scale"><img loading="lazy" src="assets/real/office.webp" width="1024" height="683" alt="Команда компании Сенсор Лицензирование в офисе"></div>
-  <div class="w" style="padding-top:36px;padding-bottom:8px"><a class="tlink" href="o-kompanii.html">Познакомиться с компанией</a></div>
-</section>
+</div></section>
 
-<section class="blk">
-  <div class="w">
-    <div class="head-row"><h2 class="d2">Коротко о главном</h2></div>
-    <div class="faq">
-      <div class="fi"><button class="fq">Сколько стоит лицензия МЧС?</button><div class="fa"><div><p>Госпошлина: 7 500 ₽. Сопровождение под ключ: от 35 000 ₽ за документы до 80 000-130 000 ₽ за полный пакет со специалистами и оборудованием. Подробности на странице цен.</p></div></div></div>
-      <div class="fi"><button class="fq">Сколько ждать?</button><div class="fa"><div><p>Полный цикл занимает 15-25 рабочих дней, в срочном режиме от 10 дней. Заявление в МЧС рассматривается до 15 рабочих дней.</p></div></div></div>
-      <div class="fi"><button class="fq">Лицензия бессрочная?</button><div class="fa"><div><p>Да, действует бессрочно и по всей России. Раз в 3 года проходит периодическое подтверждение соответствия, его мы тоже сопровождаем.</p></div></div></div>
-      <div class="fi"><button class="fq">А если лицензию не выдадут?</button><div class="fa"><div><p>Гарантия результата зафиксирована в договоре: если отказ произойдёт по нашей вине, вернём оплату полностью. На практике 98% клиентов проходят проверку с первого раза.</p></div></div></div>
-    </div>
-    <div style="margin-top:36px" class="fx"><a class="tlink" href="licenziya-mchs.html#faq">Все вопросы и ответы</a></div>
+<section class="blk" style="padding-top:0"><div class="w team">
+  <div class="ph fx"><img loading="lazy" src="assets/real/office.webp" width="1024" height="683" alt="Команда компании Сенсор Лицензирование"></div>
+  <div class="fx">
+    <h2 class="t">Кто ведёт ваше дело</h2>
+    <ul>
+      <li><div><b>Профильная команда с 2016 года</b><span>лицензирование МЧС: основная практика, не услуга в каталоге</span></div></li>
+      <li><div><b>Собственный учебный центр</b><span>обучаем и аттестуем специалистов без посредников</span></div></li>
+      <li><div><b>Своё поверенное оборудование</b><span>комплекты приборов в аренду, поверка в ФГИС «Аршин»</span></div></li>
+      <li><div><b>Шесть филиалов</b><span>оформление полностью удалённое, по всей России</span></div></li>
+    </ul>
+    <p style="margin-top:24px"><a class="tlink" href="o-kompanii.html">Познакомиться с компанией</a></p>
   </div>
-</section>
+</div></section>
 
-<section class="blk blk-ink cta-final">
-  <div class="w">
-    <h2 class="d1 fx">Начните<br>с бесплатного <span class="acc">аудита</span></h2>
-    <div class="row fx fx-d1">
-      <p class="lead">Перезвоним за 15 минут, разберём вашу ситуацию и назовём точную цену и срок.</p>
-      <div style="display:flex;gap:14px;flex-wrap:wrap">
-        <a class="btn inv" href="kontakty.html#zayavka">Оставить заявку</a>
-        <a class="btn line" style="color:#FAFAF7;border-color:rgba(250,250,247,.4)" href="tel:+78002220986">8 800 222-09-86</a>
-      </div>
-    </div>
-  </div>
-</section>
+<section class="blk" style="padding-top:0"><div class="w" style="max-width:860px">
+  <h2 class="t">Вопросы и ответы</h2>
+''' + FAQ_MAIN + '''
+</div></section>
+
+<section class="blk" style="padding-top:0"><div class="w">
+''' + BLANK.format(h2='Заполните бланк, <em>остальное оформим мы</em>') + '''
+</div></section>
 '''
 
 # ============================================================ ЛИЦЕНЗИЯ МЧС
@@ -336,364 +326,257 @@ FAQ_LD = '''<script type="application/ld+json">
 </script>
 '''
 
-VIDY9 = [
- ('01','Системы пожаротушения','Монтаж, ТО и ремонт водяного, пенного, газового, порошкового и аэрозольного пожаротушения, включая пусконаладку.'),
- ('02','Пожарная сигнализация','АПС и ОПС, системы передачи извещений, диспетчеризация, пусконаладка.'),
- ('03','Противопожарное водоснабжение','Внутренний водопровод, наружные сети, гидранты, насосные станции.'),
- ('04','Противодымная вентиляция','Дымоудаление и подпор воздуха, огнезадерживающие клапаны, вентиляторы.'),
- ('05','СОУЭ','Системы оповещения и управления эвакуацией людей при пожаре всех пяти типов.'),
- ('06','Противопожарные преграды','Двери, ворота, люки, окна, шторы: монтаж и обслуживание заполнений проёмов.'),
- ('07','Огнезащита','Обработка металлических и деревянных конструкций, кабелей, воздуховодов, тканей.'),
- ('08','Первичные средства','Огнетушители, пожарные шкафы, краны и рукава: установка, перезарядка, обслуживание.'),
- ('09','Тушение пожаров','Тушение в населённых пунктах и на объектах. Повышенные требования к персоналу и технике.'),
-]
-VIDY_CELLS = '\n'.join(
-    f'      <div class="cell fx"><span class="num">/{n}</span><h3>{t}</h3><p>{d}</p></div>'
-    for n, t, d in VIDY9)
+LIC = phero('Пожарная лицензия МЧС',
+            'Пожарная лицензия МЧС <em>под ключ</em>',
+            'От 35 000 ₽ за 15-25 рабочих дней: специалисты, оборудование, документы и сопровождение выездной проверки. Гарантия результата в договоре.') + '''
 
-LIC = '''
-<section class="hero" style="padding-top:32px">
-  <div class="w">
-    <h1 class="d1" style="font-size:clamp(38px,6.4vw,96px)">Пожарная лицензия<br>МЧС <span class="acc">под ключ</span></h1>
-    <div class="sub-row">
-      <p class="lead">От 35 000 ₽ за 15-25 рабочих дней: специалисты, оборудование, документы и сопровождение проверки. Гарантия результата в договоре.</p>
-      <div class="cta-row">
-        <a class="btn" href="#calc">Рассчитать стоимость</a>
-        <a class="btn line" href="tel:+78002220986">8 800 222-09-86</a>
-      </div>
-    </div>
+<div class="facts w">
+  <div class="row fx">
+    <div class="fact"><div class="v">от 35 000 ₽</div><div class="l">сопровождение, госпошлина 7 500 ₽ отдельно</div></div>
+    <div class="fact"><div class="v">15-25</div><div class="l">рабочих дней полный цикл</div></div>
+    <div class="fact"><div class="v">бессрочно</div><div class="l">действует по всей России</div></div>
+    <div class="fact"><div class="v"><span data-cnt="98">0</span><i>%</i></div><div class="l">проходят проверку с первого раза</div></div>
   </div>
-  <div class="hero-img"><img src="assets/real/license-sample.webp" width="1024" height="364" alt="Лицензия МЧС, оформленная для клиента компании Сенсор" data-parallax="18" fetchpriority="high"></div>
-</section>
-<div data-mbar-after></div>
+</div>
 
-<section class="blk" id="vidy">
-  <div class="w">
-    <div class="head-row"><h2 class="d2">Виды работ по лицензии</h2><span class="idx">ПП РФ № 1128</span></div>
-    <p class="head-sub lead">Девять видов деятельности. Оформим на любой набор: от одного до всех девяти.</p>
-    <div class="grid3">
-''' + VIDY_CELLS + '''
-    </div>
-    <div style="margin-top:36px" class="fx"><a class="tlink" href="vidy-rabot.html">Подробное описание каждого вида</a></div>
-  </div>
-</section>
+<section class="blk" id="vidy"><div class="w">
+  <h2 class="t">Какие виды работ покрывает</h2>
+  <p class="t-sub">Девять видов деятельности по ПП № 1128, оформляем на любой набор.</p>
+''' + LEDGER + '''
+</div></section>
 
-<section class="blk blk-paper blk-rule" id="calc">
-  <div class="w">
-    <div class="head-row"><h2 class="d2">Рассчитайте стоимость</h2><span class="idx">4 вопроса · 1 минута</span></div>
+<section class="blk" style="padding-top:0" id="calc"><div class="w">
+  <h2 class="t">Рассчитайте стоимость <em>за минуту</em></h2>
+  <p class="t-sub">Четыре вопроса. Ориентир сразу на экране, точный расчёт после заявки.</p>
 ''' + CALC.format(cta='#zayavka') + '''
-  </div>
-</section>
+</div></section>
 
-<section class="blk" id="etapy">
-  <div class="w">
-    <div class="head-row"><h2 class="d2">Шесть шагов до реестра</h2><span class="idx">оплата по этапам</span></div>
-    <div>
-      <div class="step-row fx"><div class="num">01</div><div><h3>Консультация и аудит</h3><p>Разбираем ситуацию, подбираем виды работ, считаем точную стоимость.</p></div><span class="dur">1 день</span></div>
-      <div class="step-row fx"><div class="num">02</div><div><h3>Договор</h3><p>Фиксируем цену, сроки и гарантию результата. Без скрытых доплат.</p></div><span class="dur">1 день</span></div>
-      <div class="step-row fx"><div class="num">03</div><div><h3>Специалисты и оборудование</h3><p>Подбираем штат с нужным образованием и стажем, оформляем аренду поверенных приборов.</p></div><span class="dur">3-7 дней</span></div>
-      <div class="step-row fx"><div class="num">04</div><div><h3>Пакет документов</h3><p>Готовим и перепроверяем полный комплект по требованиям Постановления № 1128.</p></div><span class="dur">2-4 дня</span></div>
-      <div class="step-row fx"><div class="num">05</div><div><h3>Подача и проверка</h3><p>Подаём через Госуслуги, готовим объект и сопровождаем выездную оценку МЧС.</p></div><span class="dur">до 15 раб. дней</span></div>
-      <div class="step-row fx"><div class="num">06</div><div><h3>Запись в реестре</h3><p>Сведения внесены в реестр МЧС России. Можно работать и участвовать в тендерах.</p></div><span class="dur">итог</span></div>
+<section class="blk" style="padding-top:0" id="etapy"><div class="w spread">
+  <div class="stick fx">
+    <h2 class="t">Путь до записи в реестре</h2>
+    <p class="t-sub">Оплата привязана к этапам. Предоплаты нет, рассрочка 0%.</p>
+  </div>
+''' + TIMELINE + '''
+</div></section>
+
+<section class="blk" style="padding-top:0" id="trebovaniya"><div class="w">
+  <h2 class="t">Лицензионные требования</h2>
+  <p class="t-sub">Что проверяет МЧС перед выдачей и как мы закрываем каждый пункт.</p>
+  <div class="cells mt fx">
+    <div class="cell"><span class="k">Персонал</span><h3>Образование и стаж</h3><p>Для ИП от 3 лет, для руководителя ООО от 5 лет, плюс повышение квалификации.</p><p class="ok">Закрываем: подбираем специалистов и обучаем в своём учебном центре.</p></div>
+    <div class="cell"><span class="k">Оборудование</span><h3>Поверенные приборы</h3><p>По Приказу МЧС № 571, с записью о поверке в ФГИС «Аршин»: манометр, мегаомметр, мультиметр и другие.</p><p class="ok">Закрываем: полный комплект в аренду, покупать не нужно.</p></div>
+    <div class="cell"><span class="k">Документы</span><h3>Полный пакет</h3><p>Устав, выписка ЕГРЮЛ или ЕГРИП, дипломы и трудовые специалистов, договор на помещение, заявление.</p><p class="ok">Закрываем: готовим и перепроверяем всё за вас.</p></div>
+  </div>
+</div></section>
+
+<section class="blk" style="padding-top:0" id="pereoformlenie"><div class="w">
+  <div class="shelf fx">
+    <h2 class="t">Лицензия сегодня: запись в реестре</h2>
+    <p class="t-sub">С 2021 года бумажные бланки не выдаются. Сведения вносятся в реестр МЧС России и проверяются по ИНН.</p>
+    <div class="tiers" style="grid-template-columns:repeat(3,1fr)">
+      <div class="tier"><h3>Переоформление</h3><div class="pr">3 500 ₽</div><div class="tm">госпошлина</div>
+        <ul><li>Добавление видов работ</li><li>Смена адреса или реквизитов</li><li>Сопровождаем под ключ</li></ul></div>
+      <div class="tier"><h3>Подтверждение</h3><div class="pr">раз в 3 года</div><div class="tm">периодическое</div>
+        <ul><li>Проверка соответствия требованиям</li><li>Готовим и сопровождаем процедуру</li></ul></div>
+      <div class="tier"><h3>Правовая база</h3><div class="pr">ФЗ-99 · ПП 1128</div><div class="tm">и Приказ МЧС № 571</div>
+        <ul><li>Без лицензии: штраф до 250 000 ₽</li><li>Приостановка до 90 суток</li></ul></div>
     </div>
+    <p class="fee"><a href="proverka.html" style="color:#fff;text-decoration:underline">Как проверить лицензию в реестре</a></p>
   </div>
-</section>
+</div></section>
 
-<section class="blk blk-paper blk-rule" id="trebovaniya">
-  <div class="w">
-    <div class="head-row"><h2 class="d2">Лицензионные требования</h2></div>
-    <div class="grid3">
-      <div class="cell fx"><span class="num">Персонал</span><h3>Образование и стаж</h3><p>Для ИП от 3 лет, для руководителя ООО от 5 лет, плюс повышение квалификации.</p><p style="margin-top:10px;color:var(--acc);font-weight:600">Закрываем: подбираем специалистов и обучаем в своём учебном центре.</p></div>
-      <div class="cell fx fx-d1"><span class="num">Оборудование</span><h3>Поверенные приборы</h3><p>По Приказу МЧС № 571, с записью о поверке в ФГИС «Аршин»: манометр, мегаомметр, мультиметр и другие.</p><p style="margin-top:10px;color:var(--acc);font-weight:600">Закрываем: полный комплект в аренду, покупать не нужно.</p></div>
-      <div class="cell fx fx-d2"><span class="num">Документы</span><h3>Полный пакет</h3><p>Устав, выписка ЕГРЮЛ или ЕГРИП, дипломы и трудовые специалистов, договор на помещение, заявление.</p><p style="margin-top:10px;color:var(--acc);font-weight:600">Закрываем: готовим и перепроверяем всё за вас.</p></div>
-    </div>
-  </div>
-</section>
+<section class="blk" style="padding-top:0" id="faq"><div class="w" style="max-width:860px">
+  <h2 class="t">Частые вопросы</h2>
+''' + FAQ_MAIN + '''
+</div></section>
 
-<section class="blk blk-ink" id="pereoformlenie">
-  <div class="w">
-    <div class="head-row"><h2 class="d2">Лицензия сегодня: запись в реестре</h2></div>
-    <p class="head-sub lead">С 2021 года бумажные бланки не выдаются. Сведения вносятся в реестр МЧС России и проверяются по ИНН. Лицензия бессрочная, раз в 3 года проходит периодическое подтверждение.</p>
-    <div class="grid3" style="border-color:rgba(250,250,247,.25)">
-      <div class="cell fill fx" style="border-color:rgba(250,250,247,.25)"><span class="num">3 500 ₽ пошлина</span><h3>Переоформление</h3><p>Добавление видов работ, смена адреса, реквизитов или наименования. Сопровождаем под ключ.</p></div>
-      <div class="cell fill fx fx-d1" style="border-color:rgba(250,250,247,.25)"><span class="num">Раз в 3 года</span><h3>Подтверждение</h3><p>МЧС проверяет соответствие лицензионным требованиям. Готовим и сопровождаем процедуру.</p></div>
-      <div class="cell fill fx fx-d2" style="border-color:rgba(250,250,247,.25)"><span class="num">Правовая база</span><h3>ФЗ-99 · ФЗ-69 · ПП № 1128</h3><p>Работа без лицензии грозит штрафом до 250 000 ₽ и приостановкой деятельности до 90 суток по КоАП РФ.</p></div>
-    </div>
-    <div style="margin-top:36px" class="fx"><a class="tlink" style="color:#FAFAF7;border-color:#FAFAF7" href="proverka.html">Проверить лицензию в реестре</a></div>
-  </div>
-</section>
-
-<section class="blk" id="faq">
-  <div class="w">
-    <div class="head-row"><h2 class="d2">Частые вопросы</h2></div>
-''' + FAQ8 + '''
-  </div>
-</section>
-
-<section class="blk blk-paper blk-rule" id="zayavka">
-  <div class="w" style="max-width:660px">
-    <div class="head-row" style="margin-bottom:28px"><h2 class="d2">Получить лицензию</h2></div>
-    <form class="form fx" onsubmit="return submitForm(event)">
-      <p>Перезвоним в течение 15 минут в рабочее время, рассчитаем стоимость и срок.</p>
-      <div class="fld"><label for="f-name">Ваше имя</label><input id="f-name" name="name" placeholder="Иван" required autocomplete="name"></div>
-      <div class="fld"><label for="f-phone">Телефон</label><input id="f-phone" name="phone" type="tel" placeholder="+7 ___ ___-__-__" required autocomplete="tel"></div>
-      <button class="btn" type="submit">Оставить заявку</button>
-      <div class="fine">Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных</div>
-    </form>
-  </div>
-</section>
+<section class="blk" style="padding-top:0"><div class="w">
+''' + BLANK.format(h2='Получить лицензию МЧС <em>под ключ</em>') + '''
+</div></section>
 '''
 
 # ============================================================ ВИДЫ РАБОТ
-VIDY_PAGE_CELLS = '\n'.join(
-    f'      <article class="cell fx"><span class="num">/{n}</span><h2>{t}</h2><p>{d}</p></article>'
-    for n, t, d in [
- ('01','Системы пожаротушения','Монтаж, ТО и ремонт водяного, пенного, газового, порошкового и аэрозольного пожаротушения, включая пусконаладку. Самый востребованный вид: ТЦ, склады, производства, бизнес-центры.'),
- ('02','Пожарная сигнализация','АПС и ОПС, системы передачи извещений, диспетчеризация, пусконаладка. Нужен всем, кто ставит и обслуживает датчики и приёмно-контрольные приборы.'),
- ('03','Противопожарное водоснабжение','Внутренний противопожарный водопровод, наружные сети, пожарные гидранты, насосные станции.'),
- ('04','Противодымная вентиляция','Системы дымоудаления и подпора воздуха, огнезадерживающие клапаны, вентиляторы дымоудаления.'),
- ('05','СОУЭ','Системы оповещения и управления эвакуацией людей при пожаре всех пяти типов.'),
- ('06','Противопожарные преграды','Противопожарные двери, ворота, люки, окна, шторы: монтаж и обслуживание заполнений проёмов.'),
- ('07','Огнезащита','Огнезащитная обработка металлических и деревянных конструкций, кабелей, воздуховодов, тканей.'),
- ('08','Первичные средства','Огнетушители, пожарные шкафы, краны и рукава: установка, перезарядка, обслуживание.'),
- ('09','Тушение пожаров','Тушение пожаров в населённых пунктах и на объектах. Отдельное лицензирование с повышенными требованиями к персоналу и технике.'),
-])
+V9 = [
+ ('I','Системы пожаротушения','Монтаж, ТО и ремонт водяного, пенного, газового, порошкового и аэрозольного пожаротушения, включая пусконаладку. Самый востребованный вид: ТЦ, склады, производства, бизнес-центры.'),
+ ('II','Пожарная сигнализация','АПС и ОПС, системы передачи извещений, диспетчеризация, пусконаладка. Нужен всем, кто ставит и обслуживает датчики и приёмно-контрольные приборы.'),
+ ('III','Противопожарное водоснабжение','Внутренний противопожарный водопровод, наружные сети, пожарные гидранты, насосные станции.'),
+ ('IV','Противодымная вентиляция','Системы дымоудаления и подпора воздуха, огнезадерживающие клапаны, вентиляторы дымоудаления.'),
+ ('V','СОУЭ','Системы оповещения и управления эвакуацией людей при пожаре всех пяти типов.'),
+ ('VI','Противопожарные преграды','Противопожарные двери, ворота, люки, окна, шторы: монтаж и обслуживание заполнений проёмов.'),
+ ('VII','Огнезащита','Огнезащитная обработка металлических и деревянных конструкций, кабелей, воздуховодов, тканей.'),
+ ('VIII','Первичные средства','Огнетушители, пожарные шкафы, краны и рукава: установка, перезарядка, обслуживание.'),
+ ('IX','Тушение пожаров','Тушение пожаров в населённых пунктах и на объектах. Отдельное лицензирование с повышенными требованиями к персоналу и технике.'),
+]
+VIDY_LEDGER = '\n'.join(
+    f'    <div class="li-row"><span class="no">{n}</span><h2>{t}</h2><p>{d}</p></div>'
+    for n, t, d in V9)
 
-VIDY_PAGE = '''
-<section class="hero" style="padding-top:28px;padding-bottom:0">
-  <div class="w">
-    <h1 class="d1" style="font-size:clamp(36px,5.8vw,88px)">Виды работ<br>по лицензии <span class="acc">МЧС</span></h1>
-    <div class="sub-row">
-      <p class="lead">Девять видов деятельности по Постановлению Правительства РФ № 1128. Оформим лицензию на любой набор: от одного вида до всех девяти.</p>
-    </div>
-  </div>
-</section>
-<div data-mbar-after></div>
+VIDY_PAGE = phero('Виды работ',
+                  'Виды работ <em>по лицензии МЧС</em>',
+                  'Девять видов деятельности по Постановлению Правительства РФ № 1128. Оформим лицензию на любой набор: от одного вида до всех девяти.') + '''
 
-<section class="blk" style="padding-top:24px">
-  <div class="w">
-    <div class="grid3">
-''' + VIDY_PAGE_CELLS + '''
-    </div>
-    <div class="callout fx" style="margin-top:40px"><b>Не знаете, какие виды выбрать?</b> Подберём оптимальный набор под ваши контракты и тендеры: лишние виды удорожают лицензию, недостающие блокируют работу. Консультация бесплатная.</div>
+<section class="blk"><div class="w">
+  <div class="ledger fx">
+''' + VIDY_LEDGER + '''
   </div>
-</section>
+  <div class="callout fx" style="margin-top:32px"><b>Не знаете, какие виды выбрать?</b> Подберём оптимальный набор под ваши контракты и тендеры: лишние виды удорожают лицензию, недостающие блокируют работу. Консультация бесплатная.</div>
+</div></section>
 
-<section class="blk blk-ink cta-final">
-  <div class="w">
-    <h2 class="d1 fx" style="font-size:clamp(34px,5.4vw,84px)">Оформим на любой<br><span class="acc">набор видов</span></h2>
-    <div class="row fx fx-d1">
-      <p class="lead">Цена и срок зависят от набора: рассчитайте за минуту.</p>
-      <div style="display:flex;gap:14px;flex-wrap:wrap">
-        <a class="btn inv" href="licenziya-mchs.html#calc">Рассчитать стоимость</a>
-        <a class="btn line" style="color:#FAFAF7;border-color:rgba(250,250,247,.4)" href="tel:+78002220986">8 800 222-09-86</a>
-      </div>
-    </div>
-  </div>
-</section>
+<section class="blk" style="padding-top:0"><div class="w">
+''' + BLANK.format(h2='Оформим на любой <em>набор видов</em>') + '''
+</div></section>
 '''
 
 # ============================================================ ЦЕНЫ
-TSENY = '''
-<section class="hero" style="padding-top:28px;padding-bottom:0">
-  <div class="w">
-    <h1 class="d1" style="font-size:clamp(36px,5.8vw,88px)">Цены<br>и <span class="acc">тарифы</span></h1>
-    <div class="sub-row">
-      <p class="lead">Прозрачные пакеты без скрытых доплат. Госпошлина оплачивается отдельно: 7 500 ₽ за выдачу, 3 500 ₽ за переоформление.</p>
-    </div>
-  </div>
-</section>
-<div data-mbar-after></div>
+TSENY = phero('Цены',
+              'Цены <em>и тарифы</em>',
+              'Прозрачные пакеты без скрытых доплат. Госпошлина оплачивается отдельно: 7 500 ₽ за выдачу, 3 500 ₽ за переоформление.') + '''
 
-<section class="blk" style="padding-top:24px">
-  <div class="w">
-''' + PLANS + '''
+<section class="blk" style="padding-top:48px"><div class="w">
+  <div class="shelf fx">
+    <h2 class="t">Четыре пакета</h2>
+    <p class="t-sub">Цена зависит от набора видов работ и того, что уже есть у вас.</p>
+''' + TIERS.format(cta='kontakty.html#zayavka') + '''
+    <p class="fee">Госпошлина отдельно: 7 500 ₽ за выдачу, 3 500 ₽ за переоформление.</p>
   </div>
-</section>
+</div></section>
 
-<section class="blk blk-paper blk-rule" id="calc">
-  <div class="w">
-    <div class="head-row"><h2 class="d2">Рассчитайте под свою задачу</h2><span class="idx">4 вопроса · 1 минута</span></div>
+<section class="blk" style="padding-top:0" id="calc"><div class="w">
+  <h2 class="t">Рассчитайте под свою задачу</h2>
+  <p class="t-sub">Четыре вопроса, ориентир сразу на экране.</p>
 ''' + CALC.format(cta='kontakty.html#zayavka') + '''
-  </div>
-</section>
+</div></section>
 
-<section class="blk">
-  <div class="w">
-    <div class="head-row"><h2 class="d2">Вопросы про оплату</h2></div>
-    <div class="faq">
-      <div class="fi"><button class="fq">Есть ли предоплата?</button><div class="fa"><div><p>Нет. Работаем по этапам: оплата привязана к выполненным шагам из договора. Доступна рассрочка 0%.</p></div></div></div>
-      <div class="fi"><button class="fq">Что входит в цену «под ключ»?</button><div class="fa"><div><p>Подбор специалистов, аренда поверенного оборудования, подготовка документов, подача через Госуслуги и сопровождение выездной проверки МЧС. Госпошлина 7 500 ₽ оплачивается отдельно.</p></div></div></div>
-      <div class="fi"><button class="fq">От чего зависит итоговая стоимость?</button><div class="fa"><div><p>От количества видов работ, наличия у вас специалистов и оборудования, формы организации и срочности. Точный расчёт делаем после короткого аудита.</p></div></div></div>
-      <div class="fi"><button class="fq">Что будет, если лицензию не выдадут?</button><div class="fa"><div><p>Гарантия результата зафиксирована в договоре: при отказе по нашей вине возвращаем оплату полностью.</p></div></div></div>
-    </div>
+<section class="blk" style="padding-top:0"><div class="w" style="max-width:860px">
+  <h2 class="t">Вопросы про оплату</h2>
+  <div class="qa mt fx">
+    <details><summary>Есть ли предоплата?</summary><p class="ans">Нет. Работаем по этапам: оплата привязана к выполненным шагам из договора. Доступна рассрочка 0%.</p></details>
+    <details><summary>Что входит в цену «под ключ»?</summary><p class="ans">Подбор специалистов, аренда поверенного оборудования, подготовка документов, подача через Госуслуги и сопровождение выездной проверки МЧС. Госпошлина 7 500 ₽ оплачивается отдельно.</p></details>
+    <details><summary>От чего зависит итоговая стоимость?</summary><p class="ans">От количества видов работ, наличия у вас специалистов и оборудования, формы организации и срочности. Точный расчёт делаем после короткого аудита.</p></details>
+    <details><summary>Что будет, если лицензию не выдадут?</summary><p class="ans">Гарантия результата зафиксирована в договоре: при отказе по нашей вине возвращаем оплату полностью.</p></details>
   </div>
-</section>
+</div></section>
 '''
 
 # ============================================================ ПРОВЕРКА
-PROVERKA = '''
-<section class="hero" style="padding-top:28px;padding-bottom:0">
-  <div class="w">
-    <h1 class="d1" style="font-size:clamp(34px,5.4vw,82px)">Проверка лицензии<br>МЧС <span class="acc">в реестре</span></h1>
-    <div class="sub-row">
-      <p class="lead">С 2021 года лицензия существует только как запись в реестре МЧС России. Проверить себя или подрядчика можно за пару минут.</p>
-    </div>
-  </div>
-</section>
-<div data-mbar-after></div>
+PROVERKA = phero('Проверка лицензии',
+                 'Проверка лицензии МЧС <em>в реестре</em>',
+                 'С 2021 года лицензия существует только как запись в реестре МЧС России. Проверить себя или подрядчика можно за пару минут.') + '''
 
-<section class="blk" style="padding-top:24px">
-  <div class="w">
-    <div>
-      <div class="step-row fx"><div class="num">01</div><div><h3>Откройте реестр МЧС</h3><p>Реестр лицензий опубликован на официальном сайте МЧС России и доступен без регистрации.</p></div></div>
-      <div class="step-row fx"><div class="num">02</div><div><h3>Введите ИНН</h3><p>Достаточно ИНН организации или ИП. Название тоже работает, но ИНН надёжнее: исключает однофамильцев.</p></div></div>
-      <div class="step-row fx"><div class="num">03</div><div><h3>Сверьте карточку</h3><p>Статус лицензии, перечень разрешённых видов работ и дата записи. Виды работ должны покрывать предмет вашего договора.</p></div></div>
-    </div>
+<section class="blk"><div class="w spread">
+  <div class="stick fx">
+    <h2 class="t">Три шага проверки</h2>
+    <p class="t-sub">Реестр открытый, регистрация не нужна. Достаточно ИНН.</p>
   </div>
-</section>
+  <div class="timeline fx">
+    <div class="tstep"><h3>Откройте реестр МЧС</h3><p>Реестр лицензий опубликован на официальном сайте МЧС России и доступен без регистрации.</p></div>
+    <div class="tstep"><h3>Введите ИНН</h3><p>Название тоже работает, но ИНН надёжнее: исключает однофамильцев.</p></div>
+    <div class="tstep"><h3>Сверьте карточку</h3><p>Статус лицензии, перечень разрешённых видов работ и дата записи. Виды работ должны покрывать предмет вашего договора.</p></div>
+  </div>
+</div></section>
 
-<section class="blk blk-paper blk-rule">
-  <div class="w prose">
-    <h2>Как читать результат</h2>
-    <ul>
-      <li><b>Запись есть, статус действующий:</b> подрядчик имеет право выполнять указанные виды работ.</li>
-      <li><b>Записи нет:</b> лицензия отсутствует, договор с таким подрядчиком несёт риски для заказчика.</li>
-      <li><b>Виды работ не совпадают с договором:</b> подрядчик выходит за рамки своей лицензии.</li>
-    </ul>
-    <div class="callout"><b>Важно:</b> бумажный бланк сам по себе ничего не подтверждает с 2021 года. Юридическую силу имеет только запись в реестре.</div>
-    <h2>Что проверить кроме реестра</h2>
-    <p>Для тендеров и крупных контрактов дополнительно смотрят выписку ЕГРЮЛ, наличие штатных специалистов и действующую поверку оборудования. Эти же требования МЧС проверяет при периодическом подтверждении раз в 3 года.</p>
-    <h2>Поможем разобраться</h2>
-    <p>Если со статусом что-то не так: лицензии нет, виды работ не совпадают или подходит срок периодического подтверждения, позвоните нам. Подскажем бесплатно, что делать дальше.</p>
-  </div>
-</section>
+<section class="blk" style="padding-top:0"><div class="w prose">
+  <h2>Как читать результат</h2>
+  <ul>
+    <li><b>Запись есть, статус действующий:</b> подрядчик имеет право выполнять указанные виды работ.</li>
+    <li><b>Записи нет:</b> лицензия отсутствует, договор с таким подрядчиком несёт риски для заказчика.</li>
+    <li><b>Виды работ не совпадают с договором:</b> подрядчик выходит за рамки своей лицензии.</li>
+  </ul>
+  <div class="callout"><b>Важно:</b> бумажный бланк сам по себе ничего не подтверждает с 2021 года. Юридическую силу имеет только запись в реестре.</div>
+  <h2>Что проверить кроме реестра</h2>
+  <p>Для тендеров и крупных контрактов дополнительно смотрят выписку ЕГРЮЛ, наличие штатных специалистов и действующую поверку оборудования. Эти же требования МЧС проверяет при периодическом подтверждении раз в 3 года.</p>
+  <h2>Поможем разобраться</h2>
+  <p>Если со статусом что-то не так: лицензии нет, виды работ не совпадают или подходит срок периодического подтверждения, позвоните нам. Подскажем бесплатно, что делать дальше.</p>
+</div></section>
 
-<section class="blk blk-ink cta-final">
-  <div class="w">
-    <h2 class="d1 fx" style="font-size:clamp(34px,5.4vw,84px)">Нужна своя<br><span class="acc">лицензия?</span></h2>
-    <div class="row fx fx-d1">
-      <p class="lead">Оформим под ключ за 15-25 рабочих дней с гарантией в договоре.</p>
-      <div style="display:flex;gap:14px;flex-wrap:wrap">
-        <a class="btn inv" href="licenziya-mchs.html">Получить лицензию</a>
-        <a class="btn line" style="color:#FAFAF7;border-color:rgba(250,250,247,.4)" href="tel:+78002220986">8 800 222-09-86</a>
-      </div>
-    </div>
-  </div>
-</section>
+<section class="blk" style="padding-top:0"><div class="w">
+''' + BLANK.format(h2='Нужна своя лицензия? <em>Оформим под ключ</em>') + '''
+</div></section>
 '''
 
 # ============================================================ О КОМПАНИИ
-OKOMP = '''
-<section class="hero" style="padding-top:28px;padding-bottom:0">
-  <div class="w">
-    <h1 class="d1" style="font-size:clamp(36px,5.8vw,88px)">Сенсор<br><span class="acc">Лицензирование</span></h1>
-    <div class="sub-row">
-      <p class="lead">Помогаем бизнесу легально работать в сфере пожарной безопасности: лицензии МЧС, СРО, ISO, электролаборатория и собственный учебный центр.</p>
-    </div>
-  </div>
-</section>
-<div data-mbar-after></div>
+OKOMP = phero('О компании',
+              'Сенсор <em>Лицензирование</em>',
+              'Помогаем бизнесу легально работать в сфере пожарной безопасности: лицензии МЧС, СРО, ISO, электролаборатория и собственный учебный центр.') + '''
 
-<div class="img-full zoom-img fx-scale"><img src="assets/real/office.webp" width="1024" height="683" alt="Команда компании Сенсор Лицензирование в офисе" fetchpriority="high"></div>
-
-<section class="blk">
-  <div class="w stats">
-    <div class="stat fx"><div class="v" data-cnt="1600" data-suf="+">0</div><div class="l mono dim">лицензий МЧС оформлено</div></div>
-    <div class="stat fx fx-d1"><div class="v"><span data-cnt="9">0</span> <i>лет</i></div><div class="l mono dim">на рынке, с 2016 года</div></div>
-    <div class="stat fx fx-d2"><div class="v" data-cnt="6">0</div><div class="l mono dim">филиалов по России</div></div>
-    <div class="stat fx fx-d3"><div class="v" data-cnt="20" data-suf="+">0</div><div class="l mono dim">госконтрактов сопровождено</div></div>
+<div class="facts w">
+  <div class="row fx">
+    <div class="fact"><div class="v" data-cnt="1600">0</div><div class="l">лицензий МЧС оформлено</div></div>
+    <div class="fact"><div class="v"><span data-cnt="9">0</span> <i>лет</i></div><div class="l">на рынке, с 2016 года</div></div>
+    <div class="fact"><div class="v" data-cnt="6">0</div><div class="l">филиалов по России</div></div>
+    <div class="fact"><div class="v" data-cnt="20">0</div><div class="l">госконтрактов сопровождено</div></div>
   </div>
-</section>
+</div>
 
-<section class="blk blk-paper blk-rule">
-  <div class="w">
-    <div class="head-row"><h2 class="d2">Почему с нами спокойно</h2></div>
-    <div class="grid2">
-      <div class="cell fx"><span class="num">Гарантия</span><h3>Результат в договоре</h3><p>Если лицензию не выдадут по нашей вине, вернём оплату полностью. На практике 98% клиентов проходят проверку с первого раза.</p></div>
-      <div class="cell fx fx-d1"><span class="num">Оплата</span><h3>Рассрочка 0% и оплата по этапам</h3><p>Без предоплаты: платите по мере выполнения шагов из договора.</p></div>
-      <div class="cell fx"><span class="num">Оборудование</span><h3>Своё, поверенное</h3><p>Комплекты приборов по Приказу МЧС № 571 в аренду, поверка подтверждена в ФГИС «Аршин».</p></div>
-      <div class="cell fx fx-d1" id="centr"><span class="num">Обучение</span><h3>Собственный учебный центр</h3><p>Повышение квалификации и аттестация специалистов под лицензионные требования, без посредников.</p></div>
-      <div class="cell fill fx" style="grid-column:1/-1"><span class="num">География</span><h3>Работаем по всей России</h3><p>Шесть филиалов и полностью удалённое оформление: документы, подача и сопровождение проверки без вашего приезда в Москву.</p></div>
-    </div>
+<section class="blk"><div class="w team">
+  <div class="ph fx"><img src="assets/real/office.webp" width="1024" height="683" alt="Команда компании Сенсор Лицензирование" fetchpriority="high"></div>
+  <div class="fx">
+    <h2 class="t">Почему с нами спокойно</h2>
+    <ul>
+      <li><div><b>Гарантия результата в договоре</b><span>при отказе по нашей вине вернём оплату полностью</span></div></li>
+      <li><div><b>Рассрочка 0% и оплата по этапам</b><span>без предоплаты, платите по мере выполнения</span></div></li>
+      <li><div><b>Своё поверенное оборудование</b><span>приборы по Приказу № 571 в аренду, поверка в «Аршине»</span></div></li>
+      <li id="centr"><div><b>Собственный учебный центр</b><span>повышение квалификации и аттестация без посредников</span></div></li>
+      <li><div><b>Работаем по всей России</b><span>шесть филиалов и полностью удалённое оформление</span></div></li>
+    </ul>
   </div>
-</section>
+</div></section>
 
-<section class="blk" style="padding-bottom:0">
-  <div class="w">
-    <div class="head-row"><h2 class="d2">Письма от клиентов</h2><span class="idx">4.9 ★ · 450+ отзывов</span></div>
-  </div>
-  <div class="hscroll">
+<section class="blk" style="padding-top:0"><div class="w">
+  <h2 class="t">Письма от клиентов</h2>
+  <div class="desk mt fx">
 ''' + LETTERS + '''
   </div>
-</section>
-
-<section class="blk">
-  <div class="w prose">
-    <h2>Реквизиты</h2>
-    <div class="callout">
-      <b>ООО «НТЦ СпецПожСтандарт»</b><br>
-      ИНН 7751144295<br>
-      Москва, Киевское шоссе, 22-й км, БП «Румянцево», корпус В, офис 409В<br>
-      Телефон: 8 800 222-09-86, звонок по России бесплатный
-    </div>
+  <div class="praise fx">
+    <div class="score">4.9 <i>★</i></div>
+    <p>Средняя оценка по 450+ отзывам на Яндекс Картах, 2ГИС и Google.</p>
   </div>
-</section>
+</div></section>
+
+<section class="blk" style="padding-top:0"><div class="w prose">
+  <h2>Реквизиты</h2>
+  <div class="callout">
+    <b>ООО «НТЦ СпецПожСтандарт»</b><br>
+    ИНН 7751144295<br>
+    Москва, Киевское шоссе, 22-й км, БП «Румянцево», корпус В, офис 409В<br>
+    Телефон: 8 800 222-09-86, звонок по России бесплатный
+  </div>
+</div></section>
 '''
 
 # ============================================================ КОНТАКТЫ
-KONTAKTY = '''
-<section class="hero" style="padding-top:28px;padding-bottom:0">
-  <div class="w">
-    <h1 class="d1" style="font-size:clamp(36px,5.8vw,88px)">Контакты<span class="acc">.</span></h1>
-    <div class="sub-row">
-      <p class="lead">Отвечаем быстро: по телефону, в WhatsApp и Telegram. Перезвоним в течение 15 минут в рабочее время.</p>
-    </div>
-  </div>
-</section>
-<div data-mbar-after></div>
+KONTAKTY = phero('Контакты',
+                 'Контакты',
+                 'Отвечаем быстро: по телефону, в WhatsApp и Telegram. Перезвоним в течение 15 минут в рабочее время.') + '''
 
-<section class="blk" style="padding-top:24px">
-  <div class="w">
-    <div class="grid2" style="margin-bottom:48px">
-      <div class="cell fx"><span class="num">Телефон</span>
-        <h3 style="font-size:clamp(22px,2.6vw,34px)"><a href="tel:+78002220986">8 800 222-09-86</a></h3>
-        <p>Звонок по России бесплатный. WhatsApp и Telegram по этому же номеру.</p></div>
-      <div class="cell fx fx-d1"><span class="num">Офис в Москве</span>
-        <h3>БП «Румянцево»</h3>
-        <p>Киевское шоссе, 22-й км, корпус В, офис 409В</p>
-        <p style="margin-top:8px">ООО «НТЦ СпецПожСтандарт» · ИНН 7751144295</p></div>
-    </div>
-    <div style="max-width:660px" id="zayavka">
-      <form class="form fx" onsubmit="return submitForm(event)">
-        <h3>Оставить заявку</h3>
-        <p>Рассчитаем стоимость и срок под ваши виды работ.</p>
-        <div class="fld"><label for="f-name">Ваше имя</label><input id="f-name" name="name" placeholder="Иван" required autocomplete="name"></div>
-        <div class="fld"><label for="f-phone">Телефон</label><input id="f-phone" name="phone" type="tel" placeholder="+7 ___ ___-__-__" required autocomplete="tel"></div>
-        <button class="btn" type="submit">Отправить</button>
-        <div class="fine">Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных</div>
-      </form>
-    </div>
+<section class="blk" style="padding-top:48px"><div class="w">
+  <div class="cells fx" style="grid-template-columns:1fr 1fr;margin-bottom:40px">
+    <div class="cell"><span class="k">Телефон</span>
+      <h3 style="font-size:26px"><a href="tel:+78002220986">8 800 222-09-86</a></h3>
+      <p>Звонок по России бесплатный. WhatsApp и Telegram по этому же номеру.</p></div>
+    <div class="cell"><span class="k">Офис в Москве</span>
+      <h3>БП «Румянцево»</h3>
+      <p>Киевское шоссе, 22-й км, корпус В, офис 409В</p>
+      <p style="margin-top:8px">ООО «НТЦ СпецПожСтандарт» · ИНН 7751144295</p></div>
   </div>
-</section>
+''' + BLANK.format(h2='Заполните бланк, <em>остальное оформим мы</em>') + '''
+</div></section>
 '''
 
 ORG_LD = '''<script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"Сенсор Лицензирование","legalName":"ООО «НТЦ СпецПожСтандарт»","telephone":"+7-800-222-09-86","address":{"@type":"PostalAddress","addressLocality":"Москва","streetAddress":"Киевское шоссе, 22-й км, БП Румянцево, корп. В, оф. 409В"},"foundingDate":"2016","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"450"}}
 </script>
-<link rel="preload" href="assets/real/license-sample.webp" as="image">
 '''
 
 page('index.html', None,
-     'Сенсор Лицензирование: лицензия МЧС под ключ, СРО, обучение | Москва и вся Россия',
+     'Сенсор Лицензирование: пожарная лицензия МЧС под ключ | Москва и вся Россия',
      'Лицензия МЧС под ключ за 15-25 рабочих дней, переоформление, готовые фирмы, обучение специалистов. С 2016 года, 1600+ лицензий, гарантия в договоре.',
      INDEX, extra_head=ORG_LD)
 
 page('licenziya-mchs.html', 0,
      'Пожарная лицензия МЧС под ключ от 35 000 ₽ за 15-25 дней | Сенсор Лицензирование',
      'Оформим лицензию МЧС на монтаж, обслуживание и тушение под ключ: специалисты, оборудование, документы, сопровождение проверки. Гарантия в договоре, рассрочка 0%.',
-     LIC, crumb='Пожарная лицензия МЧС',
-     extra_head=FAQ_LD + '<link rel="preload" href="assets/real/license-sample.webp" as="image">\n')
+     LIC, crumb='Пожарная лицензия МЧС', extra_head=FAQ_LD)
 
 page('vidy-rabot.html', 1,
      'Виды работ по лицензии МЧС: все 9 видов деятельности по ПП № 1128 | Сенсор',

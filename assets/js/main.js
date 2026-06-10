@@ -50,68 +50,6 @@ var cio = new IntersectionObserver(function(es){
 }, {threshold:.6});
 document.querySelectorAll('[data-cnt]').forEach(function(el){ cio.observe(el); });
 
-/* ---------- тикер: дублируем дорожку для бесшовного цикла ---------- */
-var tkr = document.querySelector('.ticker .tr');
-if (tkr) tkr.innerHTML += tkr.innerHTML;
-var pbar = document.getElementById('pbar');
-
-/* ---------- скролл-движок ---------- */
-var scenes = [].slice.call(document.querySelectorAll('[data-scene]'));
-var plxEls = [].slice.call(document.querySelectorAll('[data-parallax]'));
-var wordScenes = [].slice.call(document.querySelectorAll('.wordscene')).map(function(s){
-  return { el: s, words: [].slice.call(s.querySelectorAll('.words span')) };
-});
-var heroFx = document.querySelector('[data-hero-fx]');
-var ticking = false;
-
-function clamp01(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
-
-function update(){
-  ticking = false;
-  var vh = innerHeight;
-  scenes.forEach(function(s){
-    var r = s.getBoundingClientRect();
-    var total = r.height - vh;
-    if (total <= 0) return;
-    s.style.setProperty('--p', clamp01(-r.top / total).toFixed(4));
-  });
-  wordScenes.forEach(function(ws){
-    var r = ws.el.getBoundingClientRect();
-    var total = r.height - vh;
-    if (total <= 0) return;
-    var p = clamp01(-r.top / total);
-    var lit = Math.floor(p * (ws.words.length + 2));
-    ws.words.forEach(function(w, i){ w.classList.toggle('lit', i < lit); });
-  });
-  plxEls.forEach(function(el){
-    var r = el.getBoundingClientRect();
-    var center = (r.top + r.height / 2 - vh / 2) / vh;
-    var depth = +el.dataset.parallax || 30;
-    el.style.transform = 'translateY(' + (center * -depth).toFixed(1) + 'px)';
-  });
-  if (heroFx){
-    var p = clamp01(scrollY / (vh * .9));
-    heroFx.style.opacity = (1 - p * .9).toFixed(3);
-    heroFx.style.transform = 'scale(' + (1 - p * .06).toFixed(4) + ') translateY(' + (p * -28).toFixed(1) + 'px)';
-  }
-  // прогресс страницы
-  if (pbar){
-    var docH = document.documentElement.scrollHeight - vh;
-    pbar.style.transform = 'scaleX(' + (docH > 0 ? clamp01(scrollY / docH) : 0).toFixed(4) + ')';
-  }
-  nav && nav.classList.toggle('scrolled', scrollY > 8);
-}
-function onScroll(){
-  if (!ticking){ requestAnimationFrame(update); ticking = true; }
-}
-if (!reduce){
-  addEventListener('scroll', onScroll, {passive:true});
-  addEventListener('resize', onScroll, {passive:true});
-  update();
-} else if (nav){
-  addEventListener('scroll', function(){ nav.classList.toggle('scrolled', scrollY > 8); }, {passive:true});
-}
-
 /* ---------- faq ---------- */
 document.querySelectorAll('.fi .fq').forEach(function(b){
   b.addEventListener('click', function(){ b.parentElement.classList.toggle('open'); });
