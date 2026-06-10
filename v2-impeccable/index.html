@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Пожарная лицензия МЧС под ключ | Сенсор Лицензирование: вариант 2</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Лицензия МЧС под ключ от 35 000 ₽ за 15-25 рабочих дней. Вариант дизайна: кобальтовый документ.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,500;0,700;0,800;1,500&family=Sofia+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cobalt:oklch(0.46 0.19 259);          /* основной бренд */
+  --cobalt-deep:oklch(0.36 0.16 259);     /* тёмный слой */
+  --cobalt-line:oklch(0.62 0.14 259);     /* линии на кобальте */
+  --sky:oklch(0.94 0.025 259);            /* холодная подложка карточек */
+  --bg:oklch(1 0 0);                      /* чистый белый */
+  --ink:oklch(0.22 0.02 259);
+  --mut:oklch(0.45 0.02 259);
+  --gold:oklch(0.78 0.14 85);
+  --r:10px;
+  --ease:cubic-bezier(.19,1,.22,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Sofia Sans',sans-serif;background:var(--bg);color:var(--ink);font-size:17.5px;line-height:1.62;-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%;height:auto}
+button{font-family:inherit}
+::selection{background:var(--cobalt);color:#fff}
+.w{max-width:1180px;margin:0 auto;padding:0 24px}
+.serif{font-family:'Bitter',serif}
+
+/* ---------- шапка ---------- */
+header{position:sticky;top:0;z-index:50;background:var(--cobalt);color:#fff}
+.hb{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.brand{font-family:'Bitter',serif;font-weight:800;font-size:19px;letter-spacing:.01em}
+.brand span{font-weight:500;opacity:.75}
+.htel{display:flex;align-items:center;gap:20px}
+.htel a.tel{font-weight:700;font-size:17px;letter-spacing:.01em}
+.hbtn{background:#fff;color:var(--cobalt);font-weight:700;font-size:14.5px;padding:10px 20px;border-radius:var(--r);transition:transform .15s var(--ease),box-shadow .2s}
+.hbtn:hover{box-shadow:0 4px 0 var(--cobalt-deep);transform:translateY(-2px)}
+@media(max-width:600px){.hbtn{display:none}}
+
+/* ---------- hero: drenched cobalt ---------- */
+.hero{background:var(--cobalt);color:#fff;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:90px;background:var(--bg);clip-path:polygon(0 100%,100% 100%,100% 0)}
+.hero .in{padding:72px 0 150px;position:relative;z-index:1}
+.hero .doc-no{font-size:13.5px;letter-spacing:.06em;color:oklch(0.85 0.06 259);margin-bottom:30px;display:flex;gap:14px;flex-wrap:wrap}
+.hero .doc-no b{color:#fff;font-weight:600}
+.hero h1{font-family:'Bitter',serif;font-weight:800;font-size:clamp(38px,5.6vw,84px);line-height:1.04;letter-spacing:-.015em;max-width:13ch;text-wrap:balance}
+.hero h1 em{font-style:italic;font-weight:500;color:oklch(0.87 0.07 259)}
+.hero .sub{margin:30px 0 40px;font-size:clamp(17px,1.5vw,20px);max-width:54ch;color:oklch(0.91 0.035 259)}
+.hero .sub b{color:#fff}
+.hero .cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:var(--cobalt);font-weight:700;font-size:16.5px;padding:17px 32px;border:none;border-radius:var(--r);cursor:pointer;transition:transform .15s var(--ease),box-shadow .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 5px 0 var(--cobalt-deep)}
+.btn:active{transform:translateY(0);box-shadow:none}
+.btn.olive{background:var(--cobalt-deep);color:#fff}
+.btn.olive:hover{box-shadow:0 5px 0 oklch(0.26 0.12 259)}
+.hero .seal{position:absolute;right:4%;top:64px;width:clamp(120px,14vw,180px);aspect-ratio:1;border-radius:50%;border:2px dashed var(--cobalt-line);display:grid;place-items:center;animation:spin 40s linear infinite;z-index:0}
+.hero .seal svg{width:100%;height:100%}
+.hero .seal text{font-family:'Sofia Sans';font-size:9.2px;font-weight:600;letter-spacing:.34em;text-transform:uppercase;fill:oklch(0.8 0.08 259)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:900px){.hero .seal{display:none}}
+
+/* факты-строка на стыке */
+.facts{margin-top:-64px;position:relative;z-index:5}
+.facts .row{background:#fff;border:1px solid oklch(0.88 0.02 259);border-radius:14px;box-shadow:0 24px 60px -36px oklch(0.4 0.1 259 / .5);display:grid;grid-template-columns:repeat(4,1fr)}
+@media(max-width:880px){.facts .row{grid-template-columns:1fr 1fr}}
+.fact{padding:26px 28px;border-right:1px solid oklch(0.92 0.012 259)}
+.fact:last-child{border-right:none}
+@media(max-width:880px){.fact:nth-child(2){border-right:none}.fact:nth-child(-n+2){border-bottom:1px solid oklch(0.92 0.012 259)}}
+.fact .v{font-family:'Bitter',serif;font-weight:800;font-size:clamp(26px,2.6vw,36px);line-height:1;font-variant-numeric:tabular-nums}
+.fact .v i{font-style:normal;color:var(--cobalt)}
+.fact .l{font-size:13.5px;color:var(--mut);margin-top:8px}
+
+/* ---------- секции ---------- */
+section{padding:clamp(72px,9vw,116px) 0}
+h2.t{font-family:'Bitter',serif;font-weight:800;font-size:clamp(28px,3.4vw,46px);line-height:1.1;letter-spacing:-.01em;text-wrap:balance;max-width:22ch}
+.t-sub{font-size:18px;color:var(--mut);max-width:60ch;margin-top:16px}
+.mt{margin-top:clamp(36px,5vw,56px)}
+
+/* виды работ: реестровая опись */
+.ledger{border:1px solid oklch(0.88 0.02 259);border-radius:14px;overflow:hidden}
+.li-row{display:grid;grid-template-columns:64px 1fr 1.1fr;gap:20px;align-items:baseline;padding:20px 26px;background:#fff;border-bottom:1px solid oklch(0.92 0.012 259);transition:background .2s}
+.li-row:last-child{border-bottom:none}
+.li-row:hover{background:var(--sky)}
+@media(max-width:760px){.li-row{grid-template-columns:48px 1fr}.li-row p{grid-column:2}}
+.li-row .no{font-family:'Bitter';font-weight:700;color:var(--cobalt);font-size:15px}
+.li-row h3{font-size:17.5px;font-weight:700;letter-spacing:-.005em}
+.li-row p{font-size:14.5px;color:var(--mut)}
+
+/* как работаем: двухколоночный разворот */
+.spread{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(32px,5vw,72px);align-items:start}
+@media(max-width:860px){.spread{grid-template-columns:1fr}}
+.spread .sticky{position:sticky;top:96px}
+@media(max-width:860px){.spread .sticky{position:static}}
+.timeline{border-left:2px solid oklch(0.88 0.02 259);padding-left:30px;display:grid;gap:30px}
+.tstep{position:relative}
+.tstep::before{content:"";position:absolute;left:-39px;top:7px;width:16px;height:16px;border-radius:50%;background:#fff;border:4px solid var(--cobalt)}
+.tstep h3{font-family:'Bitter';font-weight:700;font-size:19px;margin-bottom:4px}
+.tstep h3 span{color:var(--mut);font-family:'Sofia Sans';font-weight:500;font-size:14px;margin-left:10px}
+.tstep p{font-size:15px;color:var(--mut);max-width:52ch}
+
+/* тарифы: кобальтовая полка */
+.shelf{background:var(--cobalt);color:#fff;border-radius:20px;padding:clamp(28px,4vw,52px)}
+.shelf h2.t{color:#fff}
+.shelf .t-sub{color:oklch(0.88 0.05 259)}
+.tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px}
+@media(max-width:1000px){.tiers{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.tiers{grid-template-columns:1fr}}
+.tier{background:oklch(0.41 0.17 259);border-radius:14px;padding:26px;display:flex;flex-direction:column;transition:transform .25s var(--ease),background .25s}
+.tier:hover{transform:translateY(-5px);background:oklch(0.39 0.165 259)}
+.tier.star{background:#fff;color:var(--ink)}
+.tier.star:hover{background:#fff}
+.tier .tg{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.tier h3{font-size:16px;font-weight:700;color:oklch(0.85 0.06 259)}
+.tier.star h3{color:var(--mut)}
+.tier .pr{font-family:'Bitter';font-weight:800;font-size:clamp(24px,2.2vw,30px);margin:10px 0 2px;white-space:nowrap}
+.tier .tm{font-size:13.5px;color:oklch(0.8 0.07 259);margin-bottom:18px}
+.tier.star .tm{color:var(--mut)}
+.tier ul{list-style:none;display:grid;gap:9px;margin-bottom:22px;flex:1}
+.tier li{font-size:14.5px;padding-left:22px;position:relative;color:oklch(0.92 0.03 259)}
+.tier.star li{color:var(--ink)}
+.tier li::before{content:"✓";position:absolute;left:0;font-weight:700;color:var(--gold)}
+.tier .btn{width:100%;padding:13px 16px;font-size:15px}
+.tier.star .btn{background:var(--cobalt);color:#fff}
+.tier.star .btn:hover{box-shadow:0 5px 0 var(--cobalt-deep)}
+.tier:not(.star) .btn{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px var(--cobalt-line)}
+.tier:not(.star) .btn:hover{background:oklch(0.36 0.15 259);transform:none}
+.shelf .fee{margin-top:22px;font-size:14px;color:oklch(0.85 0.06 259)}
+
+/* письма: стол с документами */
+.desk{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+@media(max-width:980px){.desk{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.desk{grid-template-columns:1fr 1fr}}
+.desk a{background:#fff;border:1px solid oklch(0.88 0.02 259);border-radius:10px;padding:10px;transition:transform .3s var(--ease),box-shadow .3s}
+.desk a:hover{transform:translateY(-6px) rotate(-1deg);box-shadow:0 22px 44px -26px oklch(0.4 0.1 259 / .55)}
+.desk a:nth-child(2n):hover{transform:translateY(-6px) rotate(1deg)}
+.desk img{width:100%;aspect-ratio:.72;object-fit:cover;object-position:top;border-radius:5px}
+.praise{display:flex;align-items:center;gap:26px;flex-wrap:wrap;margin-top:30px}
+.praise .score{font-family:'Bitter';font-weight:800;font-size:44px}
+.praise .score i{font-style:normal;color:var(--gold)}
+.praise p{font-size:15px;color:var(--mut);max-width:48ch}
+
+/* команда */
+.team{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,4vw,56px);align-items:center}
+@media(max-width:860px){.team{grid-template-columns:1fr}}
+.team .ph{border-radius:16px;overflow:hidden;box-shadow:0 30px 70px -42px oklch(0.4 0.1 259 / .6)}
+.team .ph img{width:100%;transition:transform 1.2s var(--ease)}
+.team .ph:hover img{transform:scale(1.03)}
+.team h2.t{margin-bottom:6px}
+.team ul{list-style:none;display:grid;gap:14px;margin-top:26px}
+.team li{display:grid;grid-template-columns:30px 1fr;gap:12px;font-size:16px;align-items:baseline}
+.team li b{display:block}
+.team li span{color:var(--mut);font-size:14.5px}
+.team li::before{content:"§";font-family:'Bitter';color:var(--cobalt);font-weight:700;font-size:19px}
+
+/* FAQ */
+.qa{border-top:1px solid oklch(0.9 0.015 259)}
+.qa details{border-bottom:1px solid oklch(0.9 0.015 259)}
+.qa summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:18px;align-items:baseline;padding:22px 4px;font-family:'Bitter';font-weight:700;font-size:18.5px;transition:color .2s}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::after{content:"+";font-size:24px;font-weight:500;color:var(--cobalt);transition:transform .3s var(--ease);flex:0 0 auto}
+.qa details[open] summary::after{transform:rotate(45deg)}
+.qa summary:hover{color:var(--cobalt)}
+.qa .ans{padding:0 4px 24px;color:var(--mut);font-size:16px;max-width:68ch}
+
+/* финал: бланк заявки */
+.blank{background:var(--sky);border-radius:20px;padding:clamp(30px,4.6vw,58px);display:grid;grid-template-columns:1fr .9fr;gap:clamp(28px,4vw,56px);align-items:center}
+@media(max-width:860px){.blank{grid-template-columns:1fr}}
+.blank h2.t em{font-style:italic;font-weight:500;color:var(--cobalt)}
+.blank p.note{margin-top:16px;color:var(--mut);font-size:16px;max-width:46ch}
+.form{background:#fff;border-radius:14px;padding:clamp(24px,3vw,36px);box-shadow:0 24px 56px -36px oklch(0.4 0.1 259 / .5)}
+.fld{margin-bottom:16px}
+.fld label{display:block;font-size:13px;font-weight:600;color:var(--mut);margin-bottom:7px}
+.fld input{width:100%;padding:15px 16px;border:1.5px solid oklch(0.88 0.02 259);border-radius:var(--r);font-size:16.5px;font-family:inherit;color:var(--ink);transition:border-color .2s,box-shadow .2s}
+.fld input::placeholder{color:oklch(0.62 0.015 259)}
+.fld input:focus{outline:none;border-color:var(--cobalt);box-shadow:0 0 0 4px oklch(0.46 0.19 259 / .14)}
+.form .btn{width:100%;background:var(--cobalt);color:#fff}
+.form .btn:hover{box-shadow:0 5px 0 var(--cobalt-deep)}
+.form .fine{font-size:12.5px;color:var(--mut);margin-top:12px;text-align:center}
+
+/* футер */
+footer{background:var(--cobalt-deep);color:oklch(0.82 0.05 259);padding:42px 0;font-size:14px}
+footer .row{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+footer b{color:#fff}
+
+/* служебное */
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(140px);background:var(--cobalt);color:#fff;padding:16px 28px;border-radius:var(--r);font-weight:600;transition:transform .4s var(--ease);z-index:200;max-width:92vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.rv.in{opacity:1;transform:none}
+.back{position:fixed;left:16px;bottom:16px;z-index:60;background:#fff;border:1px solid oklch(0.88 0.02 259);color:var(--mut);font-size:12.5px;padding:9px 14px;border-radius:8px}
+.back:hover{color:var(--ink);border-color:var(--mut)}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .hero .seal{animation:none}
+  .rv{opacity:1;transform:none;transition:none}
+  *{transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<header><div class="w hb">
+  <div class="brand">Сенсор <span>Лицензирование</span></div>
+  <div class="htel">
+    <a class="tel" href="tel:+78002220986">8 800 222-09-86</a>
+    <a class="hbtn" href="#zayavka">Оставить заявку</a>
+  </div>
+</div></header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="seal" aria-hidden="true">
+    <svg viewBox="0 0 100 100"><defs><path id="c" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0"/></defs>
+    <text><textPath href="#c">реестр мчс россии · бессрочно · вся рф · реестр мчс россии · бессрочно ·</textPath></text></svg>
+  </div>
+  <div class="w in">
+    <div class="doc-no"><span>Лицензируемая деятельность: <b>ПП РФ № 1128</b></span><span>Статус: <b>оформляем под ключ</b></span></div>
+    <h1>Пожарная лицензия МЧС, <em>оформленная за вас</em></h1>
+    <p class="sub">Специалисты, поверенное оборудование, документы и выездная проверка: всё берём на себя. <b>От 35 000 ₽, готово за 15-25 рабочих дней</b>, гарантия результата в договоре.</p>
+    <div class="cta">
+      <a class="btn" href="#zayavka">Рассчитать стоимость</a>
+      <a class="btn olive" href="tel:+78002220986">8 800 222-09-86</a>
+    </div>
+  </div>
+</div>
+
+<div class="facts w">
+  <div class="row rv">
+    <div class="fact"><div class="v" data-cnt="1600">0</div><div class="l">лицензий оформлено с 2016 года</div></div>
+    <div class="fact"><div class="v"><span data-cnt="98">0</span><i>%</i></div><div class="l">проходят проверку с первого раза</div></div>
+    <div class="fact"><div class="v">15-25</div><div class="l">рабочих дней до записи в реестре</div></div>
+    <div class="fact"><div class="v">4.9 <i>★</i></div><div class="l">по 450+ отзывам на картах</div></div>
+  </div>
+</div>
+
+<!-- ВИДЫ РАБОТ -->
+<section><div class="w">
+  <h2 class="t">Опись видов работ</h2>
+  <p class="t-sub">Девять видов деятельности по Постановлению № 1128. Лицензия оформляется на любой набор: лишние виды удорожают, недостающие блокируют контракты.</p>
+  <div class="ledger mt rv">
+    <div class="li-row"><span class="no">I</span><h3>Системы пожаротушения</h3><p>Водяное, пенное, газовое, порошковое и аэрозольное. Монтаж, ТО, ремонт.</p></div>
+    <div class="li-row"><span class="no">II</span><h3>Пожарная сигнализация</h3><p>АПС и ОПС, диспетчеризация, пусконаладка.</p></div>
+    <div class="li-row"><span class="no">III</span><h3>Противопожарный водопровод</h3><p>Внутренний и наружный, гидранты, насосные станции.</p></div>
+    <div class="li-row"><span class="no">IV</span><h3>Противодымная вентиляция</h3><p>Дымоудаление и подпор воздуха, клапаны, вентиляторы.</p></div>
+    <div class="li-row"><span class="no">V</span><h3>Оповещение и эвакуация</h3><p>СОУЭ всех пяти типов.</p></div>
+    <div class="li-row"><span class="no">VI</span><h3>Противопожарные преграды</h3><p>Двери, ворота, люки, окна, шторы.</p></div>
+    <div class="li-row"><span class="no">VII</span><h3>Огнезащита</h3><p>Конструкции, кабели, воздуховоды, ткани.</p></div>
+    <div class="li-row"><span class="no">VIII</span><h3>Первичные средства</h3><p>Огнетушители, краны, рукава: установка и перезарядка.</p></div>
+    <div class="li-row"><span class="no">IX</span><h3>Тушение пожаров</h3><p>Населённые пункты и производственные объекты.</p></div>
+  </div>
+</div></section>
+
+<!-- ПРОЦЕСС -->
+<section style="padding-top:0"><div class="w spread">
+  <div class="sticky rv">
+    <h2 class="t">Как документ становится записью в реестре</h2>
+    <p class="t-sub">Оплата привязана к этапам. Предоплаты нет, рассрочка 0%.</p>
+    <p style="margin-top:24px"><a class="btn olive" style="background:var(--cobalt);"" href="#zayavka">Начать с бесплатного аудита</a></p>
+  </div>
+  <div class="timeline rv">
+    <div class="tstep"><h3>Аудит и договор <span>1-2 дня</span></h3><p>Разбираем вашу ситуацию, подбираем виды работ, фиксируем цену, срок и гарантию результата.</p></div>
+    <div class="tstep"><h3>Специалисты и оборудование <span>3-7 дней</span></h3><p>Персонал с профильным образованием и стажем, поверенные приборы по Приказу № 571 в аренду.</p></div>
+    <div class="tstep"><h3>Пакет документов <span>2-4 дня</span></h3><p>Готовим полный комплект и перепроверяем перед подачей: ошибки исключены.</p></div>
+    <div class="tstep"><h3>Подача и выездная проверка <span>до 15 рабочих дней</span></h3><p>Подаём через Госуслуги, готовим объект и сопровождаем оценку МЧС.</p></div>
+    <div class="tstep"><h3>Запись в реестре <span>итог</span></h3><p>Компания в реестре МЧС России: можно работать и участвовать в тендерах. Лицензия бессрочная.</p></div>
+  </div>
+</div></section>
+
+<!-- ТАРИФЫ -->
+<section style="padding-top:0"><div class="w">
+  <div class="shelf rv">
+    <h2 class="t">Стоимость</h2>
+    <p class="t-sub">Цена зависит от набора видов работ и того, что уже есть у вас: люди, приборы, документы.</p>
+    <div class="tiers">
+      <div class="tier"><h3>Документы</h3><div class="pr">35 000 ₽</div><div class="tm">10 рабочих дней</div>
+        <ul><li>Пакет документов</li><li>Проверка по требованиям</li><li>Консультация эксперта</li></ul>
+        <a class="btn" href="#zayavka">Выбрать пакет</a></div>
+      <div class="tier star"><div class="tg">Выбирают чаще всего</div><h3>Под ключ</h3><div class="pr">от 80 000 ₽</div><div class="tm">15-25 рабочих дней</div>
+        <ul><li>Сопровождение до реестра</li><li>Подбор специалистов</li><li>Аренда оборудования</li><li>Выездная проверка с нами</li><li>Гарантия в договоре</li></ul>
+        <a class="btn" href="#zayavka">Выбрать пакет</a></div>
+      <div class="tier"><h3>Срочно</h3><div class="pr">от 130 000 ₽</div><div class="tm">от 10 рабочих дней</div>
+        <ul><li>Всё из «Под ключ»</li><li>Приоритетная подача</li><li>Ускоренная проверка</li></ul>
+        <a class="btn" href="#zayavka">Выбрать пакет</a></div>
+      <div class="tier"><h3>Готовая фирма</h3><div class="pr">от 299 000 ₽</div><div class="tm">1-3 дня</div>
+        <ul><li>ООО с действующей лицензией</li><li>Чистая история</li><li>Переоформление на вас</li></ul>
+        <a class="btn" href="#zayavka">Выбрать пакет</a></div>
+    </div>
+    <p class="fee">Госпошлина отдельно: 7 500 ₽ за выдачу, 3 500 ₽ за переоформление.</p>
+  </div>
+</div></section>
+
+<!-- ПИСЬМА -->
+<section style="padding-top:0"><div class="w">
+  <h2 class="t">Благодарственные письма</h2>
+  <div class="desk mt rv">
+    <a href="../assets/real/pismo_1.webp" target="_blank" rel="noopener"><img loading="lazy" src="../assets/real/pismo_1.webp" alt="Благодарственное письмо, скан 1"></a>
+    <a href="../assets/real/pismo_2.webp" target="_blank" rel="noopener"><img loading="lazy" src="../assets/real/pismo_2.webp" alt="Благодарственное письмо, скан 2"></a>
+    <a href="../assets/real/pismo_3.webp" target="_blank" rel="noopener"><img loading="lazy" src="../assets/real/pismo_3.webp" alt="Благодарственное письмо, скан 3"></a>
+    <a href="../assets/real/pismo_4.webp" target="_blank" rel="noopener"><img loading="lazy" src="../assets/real/pismo_4.webp" alt="Благодарственное письмо, скан 4"></a>
+    <a href="../assets/real/pismo_5.webp" target="_blank" rel="noopener"><img loading="lazy" src="../assets/real/pismo_5.webp" alt="Благодарственное письмо, скан 5"></a>
+    <a href="../assets/real/pismo_6.webp" target="_blank" rel="noopener"><img loading="lazy" src="../assets/real/pismo_6.webp" alt="Благодарственное письмо, скан 6"></a>
+  </div>
+  <div class="praise rv">
+    <div class="score">4.9 <i>★</i></div>
+    <p>Средняя оценка по 450+ отзывам на Яндекс Картах, 2ГИС и Google. Сканы открываются по клику.</p>
+  </div>
+</div></section>
+
+<!-- КОМАНДА -->
+<section style="padding-top:0"><div class="w team">
+  <div class="ph rv"><img loading="lazy" src="../assets/real/office.webp" alt="Команда компании Сенсор Лицензирование"></div>
+  <div class="rv">
+    <h2 class="t">Кто ведёт ваше дело</h2>
+    <ul>
+      <li><div><b>Профильная команда с 2016 года</b><span>лицензирование МЧС: основная практика, не услуга в каталоге</span></div></li>
+      <li><div><b>Собственный учебный центр</b><span>обучаем и аттестуем специалистов без посредников</span></div></li>
+      <li><div><b>Своё поверенное оборудование</b><span>комплекты приборов в аренду, поверка в ФГИС «Аршин»</span></div></li>
+      <li><div><b>Шесть филиалов</b><span>оформление полностью удалённое, по всей России</span></div></li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- FAQ -->
+<section style="padding-top:0"><div class="w" style="max-width:860px">
+  <h2 class="t">Вопросы и ответы</h2>
+  <div class="qa mt rv">
+    <details><summary>Кому обязательно нужна лицензия МЧС?</summary><p class="ans">Организациям и ИП, которые выполняют монтаж, ТО и ремонт средств обеспечения пожарной безопасности, огнезащиту или тушение пожаров. В том числе для участия в тендерах по 44-ФЗ и 223-ФЗ.</p></details>
+    <details><summary>Сколько это стоит в 2026 году?</summary><p class="ans">Госпошлина 7 500 ₽. Сопровождение: от 35 000 ₽ за подготовку документов до 80 000-130 000 ₽ за полный пакет со специалистами и оборудованием.</p></details>
+    <details><summary>Нужны ли свои специалисты и приборы?</summary><p class="ans">Да, это лицензионные требования. Помогаем с подбором персонала и сдаём поверенное оборудование в аренду: покупать не обязательно.</p></details>
+    <details><summary>Лицензия бессрочная?</summary><p class="ans">Да, действует бессрочно и по всей России. Раз в 3 года проходит периодическое подтверждение соответствия: сопровождаем и его.</p></details>
+    <details><summary>Что будет, если лицензию не выдадут?</summary><p class="ans">Гарантия результата зафиксирована в договоре: при отказе по нашей вине вернём оплату полностью. На практике 98% клиентов проходят проверку с первого раза.</p></details>
+    <details><summary>Чем грозит работа без лицензии?</summary><p class="ans">Штраф до 250 000 ₽ для юрлиц и приостановка деятельности до 90 суток по КоАП РФ, отстранение от тендеров.</p></details>
+  </div>
+</div></section>
+
+<!-- ЗАЯВКА -->
+<section style="padding-top:0" id="zayavka"><div class="w">
+  <div class="blank rv">
+    <div>
+      <h2 class="t">Заполните бланк, <em>остальное оформим мы</em></h2>
+      <p class="note">Перезвоним в течение 15 минут в рабочее время: разберём вашу ситуацию и назовём точную цену и срок.</p>
+    </div>
+    <form class="form" onsubmit="return submitForm(event)">
+      <div class="fld"><label for="nm">Ваше имя</label><input id="nm" name="name" placeholder="Иван" required autocomplete="name"></div>
+      <div class="fld"><label for="ph">Телефон</label><input id="ph" name="phone" type="tel" placeholder="+7 ___ ___-__-__" required autocomplete="tel"></div>
+      <button class="btn" type="submit">Отправить заявку</button>
+      <div class="fine">Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных</div>
+    </form>
+  </div>
+</div></section>
+
+<footer><div class="w row">
+  <div><b>Сенсор Лицензирование</b> · ООО «НТЦ СпецПожСтандарт» · ИНН 7751144295<br>Москва, Киевское шоссе, 22-й км, БП «Румянцево», корп. В, оф. 409В</div>
+  <div style="text-align:right"><b><a href="tel:+78002220986">8 800 222-09-86</a></b><br>© 2016-2026 · работаем по всей России</div>
+</div></footer>
+
+<a class="back" href="../variants.html">← к вариантам дизайна</a>
+<div class="toast" id="toast">Заявка принята: перезвоним в течение 15 минут</div>
+
+<script>
+var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var io = new IntersectionObserver(function(es){es.forEach(function(e){
+  if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+})},{threshold:.12});
+document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+var cio = new IntersectionObserver(function(es){es.forEach(function(e){
+  if (!e.isIntersecting) return; cio.unobserve(e.target);
+  var el = e.target, t = +el.dataset.cnt;
+  if (reduce){ el.textContent = t.toLocaleString('ru') + (t >= 1000 ? '+' : ''); return; }
+  var t0 = performance.now();
+  (function tick(now){
+    var p = Math.min((now - t0) / 1300, 1);
+    el.textContent = Math.round(t * (1 - Math.pow(1 - p, 4))).toLocaleString('ru') + (t >= 1000 ? '+' : '');
+    if (p < 1) requestAnimationFrame(tick);
+  })(t0);
+})},{threshold:.6});
+document.querySelectorAll('[data-cnt]').forEach(function(el){ cio.observe(el); });
+document.querySelectorAll('input[type="tel"]').forEach(function(inp){
+  inp.addEventListener('input', function(){
+    var d = inp.value.replace(/\D/g, '');
+    if (d.charAt(0) === '8') d = '7' + d.slice(1);
+    if (d && d.charAt(0) !== '7') d = '7' + d;
+    d = d.slice(0, 11);
+    var o = d.length ? '+7' : '';
+    if (d.length > 1) o += ' ' + d.slice(1, 4);
+    if (d.length > 4) o += ' ' + d.slice(4, 7);
+    if (d.length > 7) o += '-' + d.slice(7, 9);
+    if (d.length > 9) o += '-' + d.slice(9, 11);
+    inp.value = o;
+  });
+});
+function submitForm(e){e.preventDefault();var t=document.getElementById('toast');t.classList.add('show');e.target.reset();setTimeout(function(){t.classList.remove('show')},4000);return false}
+</script>
+</body>
+</html>
