@@ -262,7 +262,7 @@ h2.t em{font-style:italic;font-weight:500;color:var(--cobalt)}
 
 /* футер */
 footer{background:var(--cobalt-deep);color:oklch(0.82 0.05 259);padding:0 0 36px;font-size:14px;margin-top:clamp(60px,8vw,100px)}
-.f-cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;padding:46px 0 34px;border-bottom:1px solid oklch(0.46 0.12 259)}
+.f-cols{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;gap:28px;padding:46px 0 34px;border-bottom:1px solid oklch(0.46 0.12 259)}
 @media(max-width:860px){.f-cols{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.f-cols{grid-template-columns:1fr}}
 .f-cols b{font-family:'Bitter';color:#fff;font-size:15px;display:block;margin-bottom:14px}
@@ -304,3 +304,9 @@ footer{background:var(--cobalt-deep);color:oklch(0.82 0.05 259);padding:0 0 36px
   .fx{opacity:1;transform:none;transition:none}
   *{transition-duration:.01ms !important}
 }
+
+/* ссылки-строки и ссылки-ячейки каталога услуг */
+a.li-row h3{color:var(--cobalt)}
+a.cell{display:block}
+a.cell:focus-visible,a.li-row:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px}
+.cells .cell h3 a{color:inherit}
